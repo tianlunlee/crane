@@ -242,7 +242,13 @@ class Backdrop extends StatefulWidget {
 }
 
 class _BackdropState extends State<Backdrop>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
+  final List<Tab> tabs = <Tab>[
+    new Tab(text: 'FLY'),
+    new Tab(text: 'SLEEP'),
+    new Tab(text: 'EAT'),
+  ];
+
   final GlobalKey _backdropKey = GlobalKey(debugLabel: 'Backdrop');
   AnimationController _controller;
 
@@ -319,17 +325,24 @@ class _BackdropState extends State<Backdrop>
     final _destinationController = TextEditingController();
     final _travelerController = TextEditingController();
     final _dateController = TextEditingController();
-
+    final _tabController = TabController(length: 3, vsync: this);
     var appBar = AppBar(
       brightness: Brightness.light,
       elevation: 0.0,
       titleSpacing: 0.0,
-      title: _BackdropTitle(
-        listenable: _controller.view,
-        onPress: _toggleBackdropLayerVisibility,
-        frontTitle: widget.frontTitle,
-        backTitle: widget.backTitle,
+      // TODO(tianlun): Replace IconButton icon with Crane logo.
+      leading: new IconButton(
+        icon: Icon(Icons.menu),
+        onPressed: (){
+          _toggleBackdropLayerVisibility();
+      },
       ),
+//      title: _BackdropTitle(
+//        listenable: _controller.view,
+//        onPress: _toggleBackdropLayerVisibility,
+//        frontTitle: widget.frontTitle,
+//        backTitle: widget.backTitle,
+//      ),
       actions: <Widget>[
         new IconButton(
           icon: Icon(Icons.search),
@@ -353,6 +366,10 @@ class _BackdropState extends State<Backdrop>
       bottom: PreferredSize(
         child: Column(
           children: <Widget>[
+            TabBar(
+              controller: _tabController,
+              tabs: tabs,
+            ),
             PrimaryColorOverride(
               color: kCraneBackgroundWhite,
               child: TextField(
@@ -399,10 +416,12 @@ class _BackdropState extends State<Backdrop>
         // TODO(tianlun): Height should be dynamic?
         preferredSize: Size.fromHeight(240.0)),
     );
-    return Scaffold(
-      appBar: appBar,
-      body: LayoutBuilder(
-        builder: _buildStack,
+    return Material(
+      child: Scaffold(
+        appBar: appBar,
+        body: LayoutBuilder(
+          builder: _buildStack,
+        ),
       ),
     );
   }
