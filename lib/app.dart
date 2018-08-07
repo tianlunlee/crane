@@ -17,7 +17,10 @@ import 'package:flutter/material.dart';
 import 'backdrop.dart';
 import 'colors.dart';
 import 'home.dart';
-import 'category_menu_page.dart';
+//import 'category_menu_page.dart';
+import 'fly_form.dart';
+import 'sleep_form.dart';
+import 'eat_form.dart';
 import 'model/product.dart';
 
 
@@ -50,10 +53,16 @@ class _CraneAppState extends State<CraneApp> {
       home: Backdrop(
         currentCategory: _currentCategory,
         frontLayer: HomePage(category: _currentCategory),
-        backLayer: CategoryMenuPage(
-          currentCategory: _currentCategory,
-          onCategoryTap: _onCategoryTap,
-        ),
+        backLayer: <Widget> [
+          FlyForm(
+//          currentCategory: _currentCategory,
+//          onCategoryTap: _onCategoryTap,
+          ),
+          SleepForm(
+          ),
+          EatForm(
+          ),
+        ],
         frontTitle: Text('CRANE'),
         backTitle: Text('MENU'),
       ),

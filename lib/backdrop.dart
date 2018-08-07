@@ -221,7 +221,7 @@ class _BackdropTitle extends AnimatedWidget {
 class Backdrop extends StatefulWidget {
   final Category currentCategory;
   final Widget frontLayer;
-  final Widget backLayer;
+  final List<Widget> backLayer;
   final Widget frontTitle;
   final Widget backTitle;
 
@@ -243,11 +243,17 @@ class Backdrop extends StatefulWidget {
 
 class _BackdropState extends State<Backdrop>
     with TickerProviderStateMixin {
-  final List<Tab> tabs = <Tab>[
-    new Tab(text: 'FLY'),
-    new Tab(text: 'SLEEP'),
-    new Tab(text: 'EAT'),
-  ];
+//  final List<Tab> tabs = <Tab>[
+//    new Tab(widget:
+//      new MaterialButton(
+//        onPressed: (){
+//          _toggleBackdropLayerVisibility();
+//        },
+//        child: Text('Fly'),)
+//    ),
+//    new Tab(text: 'SLEEP'),
+//    new Tab(text: 'EAT'),
+//  ];
 
   final GlobalKey _backdropKey = GlobalKey(debugLabel: 'Backdrop');
   AnimationController _controller;
@@ -290,26 +296,24 @@ class _BackdropState extends State<Backdrop>
         velocity: _frontLayerVisible ? -_kFlingVelocity : _kFlingVelocity);
   }
 
-  Widget _buildStack(BuildContext context, BoxConstraints constraints) {
-    double layerTitleHeight = 48+.0;
-    final Size layerSize = constraints.biggest;
-    final double layerTop = layerSize.height - layerTitleHeight;
-//    final double layerSize = constraints.minHeight;
-//    final double layerTop = layerSize - layerTitleHeight;
+  Widget _buildFlyStack(BuildContext context, BoxConstraints constraints) {
+    double flyLayerTitleHeight = 300+.0;
+    final Size flyLayerSize = constraints.biggest;
+    final double flyLayerTop = flyLayerSize.height - flyLayerTitleHeight;
 
-    Animation<RelativeRect> layerAnimation = RelativeRectTween(
-      begin: RelativeRect.fromLTRB(
-//        0.0, layerTop, 0.0, layerTop - layerSize),
-          0.0, layerTop, 0.0, layerTop - layerSize.height),
-      end: RelativeRect.fromLTRB(0.0, 0.0, 0.0, 0.0),
+    Animation<RelativeRect> flyLayerAnimation = RelativeRectTween(
+      begin: RelativeRect.fromLTRB(0.0, 0.0, 0.0, 0.0),
+      end: RelativeRect.fromLTRB(
+        0.0, flyLayerTop, 0.0, flyLayerTop - flyLayerSize.height),
     ).animate(_controller.view);
 
     return Stack(
-      key: _backdropKey,
+      // TODO(tianlun): this GlobalKey should only be called once
+//      key: _backdropKey,
       children: <Widget>[
-        widget.backLayer,
+        widget.backLayer[0],
         PositionedTransition(
-          rect: layerAnimation,
+          rect: flyLayerAnimation,
           child: _FrontLayer(
             onTap: _toggleBackdropLayerVisibility,
             child: widget.frontLayer,
@@ -319,12 +323,65 @@ class _BackdropState extends State<Backdrop>
     );
   }
 
+  Widget _buildSleepStack(BuildContext context, BoxConstraints constraints) {
+    double sleepLayerTitleHeight = 356+.0;
+    final Size sleepLayerSize = constraints.biggest;
+    final double sleepLayerTop = sleepLayerSize.height - sleepLayerTitleHeight;
+
+    Animation<RelativeRect> sleepLayerAnimation = RelativeRectTween(
+      begin: RelativeRect.fromLTRB(0.0, 0.0, 0.0, 0.0),
+      end: RelativeRect.fromLTRB(
+          0.0, sleepLayerTop, 0.0, sleepLayerTop - sleepLayerSize.height),
+    ).animate(_controller.view);
+
+    return Stack(
+//      key: _backdropKey,
+      children: <Widget>[
+        widget.backLayer[1],
+        PositionedTransition(
+          rect: sleepLayerAnimation,
+          child: _FrontLayer(
+            onTap: _toggleBackdropLayerVisibility,
+            child: widget.frontLayer,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildEatStack(BuildContext context, BoxConstraints constraints) {
+    double eatLayerTitleHeight = 300+.0;
+    final Size eatLayerSize = constraints.biggest;
+    final double eatLayerTop = eatLayerSize.height - eatLayerTitleHeight;
+
+    Animation<RelativeRect> eatLayerAnimation = RelativeRectTween(
+      begin: RelativeRect.fromLTRB(0.0, 0.0, 0.0, 0.0),
+      end: RelativeRect.fromLTRB(
+          0.0, eatLayerTop, 0.0, eatLayerTop - eatLayerSize.height),
+    ).animate(_controller.view);
+
+    return Stack(
+//      key: _backdropKey,
+      children: <Widget>[
+        widget.backLayer[2],
+        PositionedTransition(
+          rect: eatLayerAnimation,
+          child: _FrontLayer(
+            onTap: _toggleBackdropLayerVisibility,
+              child: widget.frontLayer,
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final _countryDestinationController = TextEditingController();
-    final _destinationController = TextEditingController();
-    final _travelerController = TextEditingController();
-    final _dateController = TextEditingController();
+//    final _countryDestinationController = TextEditingController();
+//    final _destinationController = TextEditingController();
+//    final _travelerController = TextEditingController();
+//    final _dateController = TextEditingController();
+    // TODO(tianlun): Toggle backdrop with onPressed of current tab
     final _tabController = TabController(length: 3, vsync: this);
     var appBar = AppBar(
       brightness: Brightness.light,
@@ -343,102 +400,75 @@ class _BackdropState extends State<Backdrop>
 //        frontTitle: widget.frontTitle,
 //        backTitle: widget.backTitle,
 //      ),
-      actions: <Widget>[
-        new IconButton(
-          icon: Icon(Icons.search),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (BuildContext context) => CraneApp()),
-            );
-          },
-        ),
-        new IconButton(
-          icon: Icon(Icons.tune),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (BuildContext context) => CraneApp()),
-            );
-          },
-        ),
-      ],
-      bottom: PreferredSize(
-        child: Column(
-          children: <Widget>[
-            TabBar(
-              controller: _tabController,
-              tabs: tabs,
+//      actions: <Widget>[
+//        new IconButton(
+//          icon: Icon(Icons.search),
+//          onPressed: () {
+//            Navigator.push(
+//              context,
+//              MaterialPageRoute(builder: (BuildContext context) => CraneApp()),
+//            );
+//          },
+//        ),
+//        new IconButton(
+//          icon: Icon(Icons.tune),
+//          onPressed: () {
+//            Navigator.push(
+//              context,
+//              MaterialPageRoute(builder: (BuildContext context) => CraneApp()),
+//            );
+//          },
+//        ),
+//      ],
+      bottom: TabBar(
+        controller: _tabController,
+        tabs: <Widget>[
+          new GestureDetector(
+            onDoubleTap: () {
+              _toggleBackdropLayerVisibility();
+            },
+            child: new Tab(
+              text: 'Fly',
             ),
-            PrimaryColorOverride(
-              color: kCraneBackgroundWhite,
-              child: TextField(
-                controller: _travelerController,
-                decoration: InputDecoration(
-                  filled: true,
-                  labelText: 'Travelers',
-                ),
-              ),
+          ),
+          new GestureDetector(
+            onDoubleTap: () {
+              _toggleBackdropLayerVisibility();
+            },
+            child: new Tab(
+              text: 'Sleep',
             ),
-            PrimaryColorOverride(
-              color: kCraneBackgroundWhite,
-              child: TextField(
-                controller: _countryDestinationController,
-                decoration: InputDecoration(
-                  filled: true,
-                  labelText: 'Country',
-                ),
-              ),
+          ),
+          new GestureDetector(
+            onDoubleTap: () {
+              _toggleBackdropLayerVisibility();
+            },
+            child: new Tab(
+              text: 'Eat',
             ),
-            PrimaryColorOverride(
-              color: kCraneBackgroundWhite,
-              child: TextField(
-                controller: _destinationController,
-                decoration: InputDecoration(
-                  filled: true,
-                  labelText: 'Destination',
-                ),
-              ),
-            ),
-            PrimaryColorOverride(
-              color: kCraneBackgroundWhite,
-              child: TextField(
-                controller: _dateController,
-                decoration: InputDecoration(
-                  filled: true,
-                  labelText: 'Dates',
-                ),
-              ),
-            ),
-            SizedBox(height: 12.0),
-          ],
-        ),
-        // TODO(tianlun): Height should be dynamic?
-        preferredSize: Size.fromHeight(240.0)),
+          ),
+        ],
+      ),
     );
     return Material(
       child: Scaffold(
         appBar: appBar,
-        body: LayoutBuilder(
-          builder: _buildStack,
-        ),
+        body: TabBarView(
+          controller: _tabController,
+          children: <Widget>[
+            LayoutBuilder(
+              builder: _buildFlyStack,
+            ),
+            LayoutBuilder(
+              builder: _buildSleepStack,
+            ),
+            LayoutBuilder(
+              builder: _buildEatStack,
+            ),
+          ]
+        )
       ),
     );
   }
 }
 
-class PrimaryColorOverride extends StatelessWidget {
-  const PrimaryColorOverride({Key key, this.color, this.child})
-      : super(key: key);
-
-  final Color color;
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    return Theme(
-      child: child,
-      data: Theme.of(context).copyWith(primaryColor: color),
-    );
-  }
-}

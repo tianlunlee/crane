@@ -31,9 +31,11 @@ class CategoryMenuPage extends StatelessWidget {
         assert(onCategoryTap != null);
 
   Widget _buildCategory(Category category, BuildContext context) {
+    // TODO(tianlun): add spaces in between words
     final categoryString =
     category.toString().replaceAll('Category.', '').toUpperCase();
     final ThemeData theme = Theme.of(context);
+
     return GestureDetector(
       onTap: () => onCategoryTap(category),
       child: category == currentCategory
@@ -68,6 +70,7 @@ class CategoryMenuPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // TODO(tianlun): Use tabs to determine which text fields to show
     return Center(
       child: Container(
         padding: EdgeInsets.only(top: 40.0),
