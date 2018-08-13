@@ -18,9 +18,8 @@ import 'model/data.dart';
 import 'model/product.dart';
 
 class HomePage extends StatelessWidget {
-  final Category category;
 
-  const HomePage({this.category: Category.findTrips});
+  const HomePage();
 
   ListView _buildGridCards(BuildContext context) {
 //    Column products = getProducts(Category.findTrips);

@@ -18,6 +18,7 @@ import 'package:meta/meta.dart';
 import 'model/product.dart';
 import 'app.dart';
 import 'colors.dart';
+//import 'menu_page.dart';
 double _kFlingVelocity = 2.0;
 
 class _FrontLayer extends StatelessWidget {
@@ -36,8 +37,8 @@ class _FrontLayer extends StatelessWidget {
       elevation: 16.0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(15.0),
-          topRight: Radius.circular(15.0)
+          topLeft: Radius.circular(16.0),
+          topRight: Radius.circular(16.0)
         ),
       ),
       child: new ListView(
@@ -51,8 +52,8 @@ class _FrontLayer extends StatelessWidget {
               children: <Widget>[
                 const ListTile(
                   leading: const Icon(Icons.album),
-                  title: const Text('The Enchanted Nightingale'),
-                  subtitle: const Text('Music by Julie Gable. Lyrics by Sidney Stein.'),
+                  title: const Text('First'),
+                  subtitle: const Text('Card'),
                 ),
               ],
             ),
@@ -125,6 +126,66 @@ class _FrontLayer extends StatelessWidget {
                   leading: const Icon(Icons.album),
                   title: const Text('The Enchanted Nightingale'),
                   subtitle: const Text('Music by Julie Gable. Lyrics by Sidney Stein.'),
+                ),
+              ],
+            ),
+          ),
+          new Card(
+            child: new Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                const ListTile(
+                  leading: const Icon(Icons.album),
+                  title: const Text('The Enchanted Nightingale'),
+                  subtitle: const Text('Music by Julie Gable. Lyrics by Sidney Stein.'),
+                ),
+              ],
+            ),
+          ),
+          new Card(
+            child: new Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                const ListTile(
+                  leading: const Icon(Icons.album),
+                  title: const Text('The Enchanted Nightingale'),
+                  subtitle: const Text('Music by Julie Gable. Lyrics by Sidney Stein.'),
+                ),
+              ],
+            ),
+          ),
+          new Card(
+            child: new Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                const ListTile(
+                  leading: const Icon(Icons.album),
+                  title: const Text('The Enchanted Nightingale'),
+                  subtitle: const Text('Music by Julie Gable. Lyrics by Sidney Stein.'),
+                ),
+              ],
+            ),
+          ),
+          new Card(
+            child: new Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                const ListTile(
+                  leading: const Icon(Icons.album),
+                  title: const Text('The Enchanted Nightingale'),
+                  subtitle: const Text('Music by Julie Gable. Lyrics by Sidney Stein.'),
+                ),
+              ],
+            ),
+          ),
+          new Card(
+            child: new Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                const ListTile(
+                  leading: const Icon(Icons.album),
+                  title: const Text('Last'),
+                  subtitle: const Text('Card'),
                 ),
               ],
             ),
@@ -152,8 +213,6 @@ class _BackdropTitle extends AnimatedWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Animation<double> animation = this.listenable;
-
     return new DefaultTextStyle(
       style: Theme.of(context).primaryTextTheme.title,
       softWrap: false,
@@ -171,42 +230,6 @@ class _BackdropTitle extends AnimatedWidget {
             onPressed: this.onPress,
           ),
         ),
-        // Here, we do a custom cross fade between backTitle and frontTitle.
-        // This makes a smooth animation between the two texts.
-        Stack(
-          children: <Widget>[
-            Opacity(
-              opacity: CurvedAnimation(
-                parent: ReverseAnimation(animation),
-                curve: Interval(0.5, 1.0),
-              ).value,
-              child: FractionalTranslation(
-                translation: Tween<Offset>(
-                  begin: Offset.zero,
-                  end: Offset(0.5, 0.0),
-                ).evaluate(animation),
-                child: backTitle,
-              ),
-            ),
-            Opacity(
-              opacity: CurvedAnimation(
-                parent: animation,
-                curve: Interval(0.5, 1.0),
-              ).value,
-              child: FractionalTranslation(
-                translation: Tween<Offset>(
-                  begin: Offset(-0.25, 0.0),
-                  end: Offset.zero,
-                ).evaluate(animation),
-                child: frontTitle,
-              ),
-            ),
-          ],
-        ),
-//        ),
-//        Row(
-
-//        ),
       ]),
     );
   }
@@ -219,20 +242,17 @@ class _BackdropTitle extends AnimatedWidget {
 /// can make a selection. The user can also configure the titles for when the
 /// front or back layer is showing.
 class Backdrop extends StatefulWidget {
-  final Category currentCategory;
   final Widget frontLayer;
   final List<Widget> backLayer;
   final Widget frontTitle;
   final Widget backTitle;
 
   const Backdrop({
-    @required this.currentCategory,
     @required this.frontLayer,
     @required this.backLayer,
     @required this.frontTitle,
     @required this.backTitle,
-  })  : assert(currentCategory != null),
-        assert(frontLayer != null),
+  })  : assert(frontLayer != null),
         assert(backLayer != null),
         assert(frontTitle != null),
         assert(backTitle != null);
@@ -243,20 +263,10 @@ class Backdrop extends StatefulWidget {
 
 class _BackdropState extends State<Backdrop>
     with TickerProviderStateMixin {
-//  final List<Tab> tabs = <Tab>[
-//    new Tab(widget:
-//      new MaterialButton(
-//        onPressed: (){
-//          _toggleBackdropLayerVisibility();
-//        },
-//        child: Text('Fly'),)
-//    ),
-//    new Tab(text: 'SLEEP'),
-//    new Tab(text: 'EAT'),
-//  ];
 
   final GlobalKey _backdropKey = GlobalKey(debugLabel: 'Backdrop');
   AnimationController _controller;
+  OverlayEntry _menuEntry;
 
   @override
   void initState() {
@@ -266,18 +276,20 @@ class _BackdropState extends State<Backdrop>
       value: 1.0,
       vsync: this,
     );
+    _menuEntry =
+        OverlayEntry(builder: (BuildContext context) => _buildMenu(context));
   }
 
-  @override
-  void didUpdateWidget(Backdrop old) {
-    super.didUpdateWidget(old);
-
-    if (widget.currentCategory != old.currentCategory) {
-      _toggleBackdropLayerVisibility();
-    } else if (!_frontLayerVisible) {
-      _controller.fling(velocity: _kFlingVelocity);
-    }
-  }
+//  @override
+//  void didUpdateWidget(Backdrop old) {
+//    super.didUpdateWidget(old);
+//    // TODO(tianlun): Update to Crane categories
+//    if (widget.currentCategory != old.currentCategory) {
+//      _toggleBackdropLayerVisibility();
+//    } else if (!_frontLayerVisible) {
+//      _controller.fling(velocity: _kFlingVelocity);
+//    }
+//  }
 
   @override
   void dispose() {
@@ -304,11 +316,10 @@ class _BackdropState extends State<Backdrop>
     Animation<RelativeRect> flyLayerAnimation = RelativeRectTween(
       begin: RelativeRect.fromLTRB(0.0, 0.0, 0.0, 0.0),
       end: RelativeRect.fromLTRB(
-        0.0, flyLayerTop, 0.0, flyLayerTop - flyLayerSize.height),
+        0.0, flyLayerTop, 0.0, 0.0),
     ).animate(_controller.view);
 
     return Stack(
-      // TODO(tianlun): this GlobalKey should only be called once
 //      key: _backdropKey,
       children: <Widget>[
         widget.backLayer[0],
@@ -331,7 +342,7 @@ class _BackdropState extends State<Backdrop>
     Animation<RelativeRect> sleepLayerAnimation = RelativeRectTween(
       begin: RelativeRect.fromLTRB(0.0, 0.0, 0.0, 0.0),
       end: RelativeRect.fromLTRB(
-          0.0, sleepLayerTop, 0.0, sleepLayerTop - sleepLayerSize.height),
+          0.0, sleepLayerTop, 0.0, 0.0),
     ).animate(_controller.view);
 
     return Stack(
@@ -357,13 +368,15 @@ class _BackdropState extends State<Backdrop>
     Animation<RelativeRect> eatLayerAnimation = RelativeRectTween(
       begin: RelativeRect.fromLTRB(0.0, 0.0, 0.0, 0.0),
       end: RelativeRect.fromLTRB(
-          0.0, eatLayerTop, 0.0, eatLayerTop - eatLayerSize.height),
+          0.0, eatLayerTop, 0.0, 0.0),
     ).animate(_controller.view);
 
     return Stack(
 //      key: _backdropKey,
       children: <Widget>[
         widget.backLayer[2],
+        // Use a boolean that is switched on menu icon press
+        // set above line to a ternary that either displays
         PositionedTransition(
           rect: eatLayerAnimation,
           child: _FrontLayer(
@@ -375,14 +388,9 @@ class _BackdropState extends State<Backdrop>
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-//    final _countryDestinationController = TextEditingController();
-//    final _destinationController = TextEditingController();
-//    final _travelerController = TextEditingController();
-//    final _dateController = TextEditingController();
-    // TODO(tianlun): Toggle backdrop with onPressed of current tab
+  Widget _buildMainApp(BuildContext context) {
     final _tabController = TabController(length: 3, vsync: this);
+
     var appBar = AppBar(
       brightness: Brightness.light,
       elevation: 0.0,
@@ -390,41 +398,17 @@ class _BackdropState extends State<Backdrop>
       // TODO(tianlun): Replace IconButton icon with Crane logo.
       leading: new IconButton(
         icon: Icon(Icons.menu),
-        onPressed: (){
-          _toggleBackdropLayerVisibility();
-      },
+        onPressed: () {
+          // Insert Overlay Entry
+          Overlay.of(context).insert(_menuEntry);
+//          MaterialPageRoute(builder: (BuildContext context) => HeroAnimation());
+        },
       ),
-//      title: _BackdropTitle(
-//        listenable: _controller.view,
-//        onPress: _toggleBackdropLayerVisibility,
-//        frontTitle: widget.frontTitle,
-//        backTitle: widget.backTitle,
-//      ),
-//      actions: <Widget>[
-//        new IconButton(
-//          icon: Icon(Icons.search),
-//          onPressed: () {
-//            Navigator.push(
-//              context,
-//              MaterialPageRoute(builder: (BuildContext context) => CraneApp()),
-//            );
-//          },
-//        ),
-//        new IconButton(
-//          icon: Icon(Icons.tune),
-//          onPressed: () {
-//            Navigator.push(
-//              context,
-//              MaterialPageRoute(builder: (BuildContext context) => CraneApp()),
-//            );
-//          },
-//        ),
-//      ],
       bottom: TabBar(
         controller: _tabController,
         tabs: <Widget>[
           new GestureDetector(
-            onDoubleTap: () {
+            onTap: () {
               _toggleBackdropLayerVisibility();
             },
             child: new Tab(
@@ -432,7 +416,7 @@ class _BackdropState extends State<Backdrop>
             ),
           ),
           new GestureDetector(
-            onDoubleTap: () {
+            onTap: () {
               _toggleBackdropLayerVisibility();
             },
             child: new Tab(
@@ -440,7 +424,7 @@ class _BackdropState extends State<Backdrop>
             ),
           ),
           new GestureDetector(
-            onDoubleTap: () {
+            onTap: () {
               _toggleBackdropLayerVisibility();
             },
             child: new Tab(
@@ -450,25 +434,176 @@ class _BackdropState extends State<Backdrop>
         ],
       ),
     );
-    return Material(
-      child: Scaffold(
+
+    return Scaffold(
         appBar: appBar,
         body: TabBarView(
-          controller: _tabController,
-          children: <Widget>[
-            LayoutBuilder(
-              builder: _buildFlyStack,
-            ),
-            LayoutBuilder(
-              builder: _buildSleepStack,
-            ),
-            LayoutBuilder(
-              builder: _buildEatStack,
-            ),
-          ]
+            controller: _tabController,
+            children: <Widget>[
+              LayoutBuilder(
+                builder: _buildFlyStack,
+              ),
+              LayoutBuilder(
+                builder: _buildSleepStack,
+              ),
+              LayoutBuilder(
+                builder: _buildEatStack,
+              ),
+            ]
         )
+    );
+  }
+
+  Widget _buildMenu(BuildContext context) {
+    return Material(
+      child: Container(
+        padding: EdgeInsets.only(top: 40.0),
+        color: kCranePurple800,
+        child: ListView(
+          children: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.arrow_back,
+                semanticLabel: 'back',
+              ),
+              onPressed: (){
+//                Navigator.push(
+//                  context,
+//                  MaterialPageRoute(
+//                    builder: (BuildContext context) => CraneApp()
+//                  ),
+//                );
+                _menuEntry.remove();
+
+              }
+            ),
+            Text('Find Trips'),
+            Text('My Trips'),
+            Text('Saved Trips'),
+            Text('Price Alerts'),
+            Text('My Account'),
+          ],
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO(tianlun): Toggle backdrop with onPressed of current tab
+
+    return Material(
+      child: Overlay(
+        initialEntries: <OverlayEntry>[
+          OverlayEntry(builder: (BuildContext context) => _buildMainApp(context)),
+        ],
+//          Scaffold(
+//            appBar: appBar,
+//            body: TabBarView(
+//                controller: _tabController,
+//                children: <Widget>[
+//                  LayoutBuilder(
+//                    builder: _buildFlyStack,
+//                  ),
+//                  LayoutBuilder(
+//                    builder: _buildSleepStack,
+//                  ),
+//                  LayoutBuilder(
+//                    builder: _buildEatStack,
+//                  ),
+//                ]
+//            )
+//        ),
       ),
     );
   }
 }
 
+class MenuHero extends StatelessWidget {
+  const MenuHero({
+    Key key,
+    this.menu,
+    this.onTap,
+    this.width
+  }) : super(key: key);
+
+  final String menu;
+  final VoidCallback onTap;
+  final double width;
+
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: width,
+      child: Hero(
+        tag: menu,
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: onTap,
+            child: Container(
+              padding: EdgeInsets.only(top: 40.0),
+              color: kCranePurple800,
+              child: ListView(
+                children: <Widget>[
+                  IconButton(
+                    icon: Icon(
+                      Icons.arrow_back,
+                      semanticLabel: 'back',
+                    ),
+                    onPressed: (){
+                      Navigator.pop(context);
+                    }
+                  ),
+                  Text('Find Trips'),
+                  Text('My Trips'),
+                  Text('Saved Trips'),
+                  Text('Price Alerts'),
+                  Text('My Account'),
+                ],
+              ),
+            ),// overlay here
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class HeroAnimation extends StatelessWidget {
+  Widget build(BuildContext context) {
+//    timeDilation = 5.0; // 1.0 means normal animation speed.
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Basic Hero Animation'),
+      ),
+      body: Center(
+        child: MenuHero(
+          menu: 'menu',
+          width: 300.0,
+          onTap: () {
+            Navigator.of(context).push(MaterialPageRoute<Null>(
+                builder: (BuildContext context) {
+                  return Scaffold(
+                    body: Container(
+                      // The blue background emphasizes that it's a new route.
+                      color: Colors.lightBlueAccent,
+                      padding: const EdgeInsets.all(16.0),
+                      alignment: Alignment.topLeft,
+                      child: MenuHero(
+                        menu: 'menu',
+                        width: 100.0,
+                        onTap: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ),
+                  );
+                }
+            ));
+          },
+        ),
+      ),
+    );
+  }
+}

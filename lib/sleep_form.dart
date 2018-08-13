@@ -34,7 +34,7 @@ class _SleepFormState extends State<SleepForm> {
         child: Column(
           children: <Widget>[
             PrimaryColorOverride(
-              color: kCraneBackgroundWhite,
+              color: kCranePrimaryWhite,
               child: TextField(
                 controller: _travelerController,
                 decoration: InputDecoration(
@@ -44,7 +44,7 @@ class _SleepFormState extends State<SleepForm> {
               ),
             ),
             PrimaryColorOverride(
-              color: kCraneBackgroundWhite,
+              color: kCranePrimaryWhite,
               child: TextField(
                 controller: _dateController,
                 decoration: InputDecoration(
@@ -54,7 +54,7 @@ class _SleepFormState extends State<SleepForm> {
               ),
             ),
             PrimaryColorOverride(
-              color: kCraneBackgroundWhite,
+              color: kCranePrimaryWhite,
               child: TextField(
                 controller: _locationController,
                 decoration: InputDecoration(

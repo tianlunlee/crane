@@ -35,7 +35,7 @@ class _FlyFormState extends State<FlyForm> {
         child: Column(
           children: <Widget>[
             PrimaryColorOverride(
-              color: kCraneBackgroundWhite,
+              color: kCranePrimaryWhite,
               child: TextField(
                 controller: _travelerController,
                 decoration: InputDecoration(
@@ -45,7 +45,7 @@ class _FlyFormState extends State<FlyForm> {
               ),
             ),
             PrimaryColorOverride(
-              color: kCraneBackgroundWhite,
+              color: kCranePrimaryWhite,
               child: TextField(
                 controller: _countryDestinationController,
                 decoration: InputDecoration(
@@ -55,7 +55,7 @@ class _FlyFormState extends State<FlyForm> {
               ),
             ),
             PrimaryColorOverride(
-              color: kCraneBackgroundWhite,
+              color: kCranePrimaryWhite,
               child: TextField(
                 controller: _destinationController,
                 decoration: InputDecoration(
@@ -65,7 +65,7 @@ class _FlyFormState extends State<FlyForm> {
               ),
             ),
             PrimaryColorOverride(
-              color: kCraneBackgroundWhite,
+              color: kCranePrimaryWhite,
               child: TextField(
                 controller: _dateController,
                 decoration: InputDecoration(

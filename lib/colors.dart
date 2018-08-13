@@ -20,6 +20,5 @@ const kCranePurple900 = const Color(0xFF4E0D3A);
 
 const kCraneRed700 = const Color(0xFFE30425);
 
-const kCraneBackgroundWhite = Colors.white;
-
+const kCranePrimaryWhite = const Color(0xFFFFFFFF);
 const kCraneErrorOrange = const Color(0xFFFF9100);

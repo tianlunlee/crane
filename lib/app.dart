@@ -17,11 +17,10 @@ import 'package:flutter/material.dart';
 import 'backdrop.dart';
 import 'colors.dart';
 import 'home.dart';
-//import 'category_menu_page.dart';
+import 'menu_page.dart';
 import 'fly_form.dart';
 import 'sleep_form.dart';
 import 'eat_form.dart';
-import 'model/product.dart';
 
 
 class CraneApp extends StatefulWidget {
@@ -38,7 +37,6 @@ class CraneApp extends StatefulWidget {
 }
 
 class _CraneAppState extends State<CraneApp> {
-  Category _currentCategory = Category.findTrips; // change to find trips
 
   @override
   Widget build(BuildContext context) {
@@ -51,17 +49,12 @@ class _CraneAppState extends State<CraneApp> {
     return MaterialApp(
       title: 'Crane',
       home: Backdrop(
-        currentCategory: _currentCategory,
-        frontLayer: HomePage(category: _currentCategory),
+        frontLayer: HomePage(),
         backLayer: <Widget> [
-          FlyForm(
-//          currentCategory: _currentCategory,
-//          onCategoryTap: _onCategoryTap,
-          ),
-          SleepForm(
-          ),
-          EatForm(
-          ),
+          FlyForm(),
+          SleepForm(),
+          EatForm(),
+//          MenuPage(),
         ],
         frontTitle: Text('CRANE'),
         backTitle: Text('MENU'),
@@ -71,16 +64,10 @@ class _CraneAppState extends State<CraneApp> {
       theme: _kCraneTheme,
     );
   }
-  /// Function to call when a [Category] is tapped.
-  void _onCategoryTap(Category category) {
-    setState(() {
-      _currentCategory = category;
-    });
-  }
 }
 
 Route<dynamic> _getRoute(RouteSettings settings) {
-  if (settings.name != '/app') {
+  if (settings.name != '/') {
     return null;
   }
 
@@ -95,7 +82,7 @@ Route<dynamic> _getRoute(RouteSettings settings) {
 final ThemeData _kCraneTheme = _buildCraneTheme();
 
 IconThemeData _customIconTheme(IconThemeData original) {
-  return original.copyWith(color: kCraneBackgroundWhite);
+  return original.copyWith(color: kCranePrimaryWhite);
 }
 
 ThemeData _buildCraneTheme() {
@@ -105,8 +92,8 @@ ThemeData _buildCraneTheme() {
     accentColor: kCranePurple700,
     primaryColor: kCranePurple800,
     buttonColor: kCraneRed700,
-    scaffoldBackgroundColor: kCraneBackgroundWhite,
-    cardColor: kCraneBackgroundWhite,
+    scaffoldBackgroundColor: kCranePrimaryWhite,
+    cardColor: kCranePrimaryWhite,
     textSelectionColor: kCranePurple700,
     errorColor: kCraneErrorOrange,
     buttonTheme: ButtonThemeData(

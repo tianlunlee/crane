@@ -35,7 +35,7 @@ class _EatFormState extends State<EatForm> {
             child: Column(
               children: <Widget>[
                 PrimaryColorOverride(
-                  color: kCraneBackgroundWhite,
+                  color: kCranePrimaryWhite,
                   child: TextField(
                     controller: _dinerController,
                     decoration: InputDecoration(
@@ -45,7 +45,7 @@ class _EatFormState extends State<EatForm> {
                   ),
                 ),
                 PrimaryColorOverride(
-                  color: kCraneBackgroundWhite,
+                  color: kCranePrimaryWhite,
                   child: TextField(
                     controller: _dateController,
                     decoration: InputDecoration(
@@ -55,7 +55,7 @@ class _EatFormState extends State<EatForm> {
                   ),
                 ),
                 PrimaryColorOverride(
-                  color: kCraneBackgroundWhite,
+                  color: kCranePrimaryWhite,
                   child: TextField(
                     controller: _timeController,
                     decoration: InputDecoration(
@@ -65,7 +65,7 @@ class _EatFormState extends State<EatForm> {
                   ),
                 ),
                 PrimaryColorOverride(
-                  color: kCraneBackgroundWhite,
+                  color: kCranePrimaryWhite,
                   child: TextField(
                     controller: _locationController,
                     decoration: InputDecoration(
