@@ -30,53 +30,61 @@ class _EatFormState extends State<EatForm> {
   @override
   Widget build(BuildContext context) {
     return Center(
-        child: Container(
-            color: kCranePurple900,
-            child: Column(
-              children: <Widget>[
-                PrimaryColorOverride(
-                  color: kCranePrimaryWhite,
-                  child: TextField(
-                    controller: _dinerController,
-                    decoration: InputDecoration(
-                      filled: true,
-                      labelText: 'Diners',
-                    ),
-                  ),
+      child: Container(
+        color: kCranePurple800,
+        child: ListView(
+          padding: EdgeInsets.symmetric(horizontal: 24.0),
+          children: <Widget>[
+            PrimaryColorOverride(
+              color: kCranePrimaryWhite,
+              child: TextField(
+                controller: _dinerController,
+                decoration: InputDecoration(
+                  fillColor: kCranePurple700,
+                  filled: true,
+                  labelText: 'Diners',
                 ),
-                PrimaryColorOverride(
-                  color: kCranePrimaryWhite,
-                  child: TextField(
-                    controller: _dateController,
-                    decoration: InputDecoration(
-                      filled: true,
-                      labelText: 'Select a Date',
-                    ),
-                  ),
+              ),
+            ),
+            SizedBox(height: 8.0),
+            PrimaryColorOverride(
+              color: kCranePrimaryWhite,
+              child: TextField(
+                controller: _dateController,
+                decoration: InputDecoration(
+                  fillColor: kCranePurple700,
+                  filled: true,
+                  labelText: 'Select a Date',
                 ),
-                PrimaryColorOverride(
-                  color: kCranePrimaryWhite,
-                  child: TextField(
-                    controller: _timeController,
-                    decoration: InputDecoration(
-                      filled: true,
-                      labelText: 'Select Time',
-                    ),
-                  ),
+              ),
+            ),
+            SizedBox(height: 8.0),
+            PrimaryColorOverride(
+              color: kCranePrimaryWhite,
+              child: TextField(
+                controller: _timeController,
+                decoration: InputDecoration(
+                  fillColor: kCranePurple700,
+                  filled: true,
+                  labelText: 'Select Time',
                 ),
-                PrimaryColorOverride(
-                  color: kCranePrimaryWhite,
-                  child: TextField(
-                    controller: _locationController,
-                    decoration: InputDecoration(
-                      filled: true,
-                      labelText: 'Select Location',
-                    ),
-                  ),
+              ),
+            ),
+            SizedBox(height: 8.0),
+            PrimaryColorOverride(
+              color: kCranePrimaryWhite,
+              child: TextField(
+                controller: _locationController,
+                decoration: InputDecoration(
+                  fillColor: kCranePurple700,
+                  filled: true,
+                  labelText: 'Select Location',
                 ),
-              ],
-            )
-        )
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

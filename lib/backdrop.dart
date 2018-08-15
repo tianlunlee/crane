@@ -309,7 +309,7 @@ class _BackdropState extends State<Backdrop>
   }
 
   Widget _buildFlyStack(BuildContext context, BoxConstraints constraints) {
-    double flyLayerTitleHeight = 300+.0;
+    double flyLayerTitleHeight = 292+.0;
     final Size flyLayerSize = constraints.biggest;
     final double flyLayerTop = flyLayerSize.height - flyLayerTitleHeight;
 
@@ -335,7 +335,7 @@ class _BackdropState extends State<Backdrop>
   }
 
   Widget _buildSleepStack(BuildContext context, BoxConstraints constraints) {
-    double sleepLayerTitleHeight = 356+.0;
+    double sleepLayerTitleHeight = 355+.0;
     final Size sleepLayerSize = constraints.biggest;
     final double sleepLayerTop = sleepLayerSize.height - sleepLayerTitleHeight;
 
@@ -361,7 +361,7 @@ class _BackdropState extends State<Backdrop>
   }
 
   Widget _buildEatStack(BuildContext context, BoxConstraints constraints) {
-    double eatLayerTitleHeight = 300+.0;
+    double eatLayerTitleHeight = 292+.0;
     final Size eatLayerSize = constraints.biggest;
     final double eatLayerTop = eatLayerSize.height - eatLayerTitleHeight;
 
@@ -396,39 +396,50 @@ class _BackdropState extends State<Backdrop>
       elevation: 0.0,
       titleSpacing: 0.0,
       // TODO(tianlun): Replace IconButton icon with Crane logo.
-      leading: new IconButton(
-        icon: Icon(Icons.menu),
-        onPressed: () {
-          // Insert Overlay Entry
-          Overlay.of(context).insert(_menuEntry);
-//          MaterialPageRoute(builder: (BuildContext context) => HeroAnimation());
-        },
-      ),
-      bottom: TabBar(
-        controller: _tabController,
-        tabs: <Widget>[
-          new GestureDetector(
-            onTap: () {
-              _toggleBackdropLayerVisibility();
-            },
-            child: new Tab(
-              text: 'Fly',
+      flexibleSpace: Row(
+        children: <Widget>[
+          Container(
+            padding: EdgeInsets.fromLTRB(0.0, 16.0, 12.0, 0.0),
+            child: IconButton(
+              icon: Icon(Icons.menu),
+              onPressed: () {
+                // Insert Overlay Entry
+                Overlay.of(context).insert(_menuEntry);
+              },
             ),
           ),
-          new GestureDetector(
-            onTap: () {
-              _toggleBackdropLayerVisibility();
-            },
-            child: new Tab(
-              text: 'Sleep',
-            ),
-          ),
-          new GestureDetector(
-            onTap: () {
-              _toggleBackdropLayerVisibility();
-            },
-            child: new Tab(
-              text: 'Eat',
+          Container(
+            padding: EdgeInsets.only(top: 36.0, bottom: 10.0),
+            height: 150.0,
+            width: 300.0,
+            child: TabBar(
+              controller: _tabController,
+              tabs: <Widget>[
+                GestureDetector(
+                  onTap: () {
+                    _toggleBackdropLayerVisibility();
+                  },
+                  child: Tab(
+                  text: 'FLY',
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                  _toggleBackdropLayerVisibility();
+                  },
+                  child:  Tab(
+                    text: 'SLEEP',
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                  _toggleBackdropLayerVisibility();
+                  },
+                  child:  Tab(
+                    text: 'EAT',
+                  ),
+                ),
+              ],
             ),
           ),
         ],
@@ -467,14 +478,7 @@ class _BackdropState extends State<Backdrop>
                 semanticLabel: 'back',
               ),
               onPressed: (){
-//                Navigator.push(
-//                  context,
-//                  MaterialPageRoute(
-//                    builder: (BuildContext context) => CraneApp()
-//                  ),
-//                );
                 _menuEntry.remove();
-
               }
             ),
             Text('Find Trips'),

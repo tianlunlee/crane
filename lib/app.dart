@@ -92,6 +92,8 @@ ThemeData _buildCraneTheme() {
     accentColor: kCranePurple700,
     primaryColor: kCranePurple800,
     buttonColor: kCraneRed700,
+    hintColor: kCranePrimaryWhite,
+    indicatorColor: kCranePrimaryWhite,
     scaffoldBackgroundColor: kCranePrimaryWhite,
     cardColor: kCranePrimaryWhite,
     textSelectionColor: kCranePurple700,
@@ -113,20 +115,18 @@ TextTheme _buildCraneTextTheme(TextTheme base) {
       fontWeight: FontWeight.w500,
     ),
     title: base.title.copyWith(
-        fontSize: 18.0
+        fontSize: 16.0
     ),
     caption: base.caption.copyWith(
       fontWeight: FontWeight.w400,
-      fontSize: 14.0,
+      fontSize: 12.0,
     ),
     body2: base.body2.copyWith(
       fontWeight: FontWeight.w500,
-      fontSize: 16.0,
+      fontSize: 14.0,
     ),
 
   ).apply(
     fontFamily: 'Raleway',
-//    displayColor: ,
-//    bodyColor: ,
   );
 }

@@ -30,42 +30,48 @@ class _SleepFormState extends State<SleepForm> {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        color: kCranePurple900,
-        child: Column(
+        color: kCranePurple800,
+        child: ListView(
+          padding: EdgeInsets.symmetric(horizontal: 24.0),
           children: <Widget>[
             PrimaryColorOverride(
               color: kCranePrimaryWhite,
               child: TextField(
                 controller: _travelerController,
                 decoration: InputDecoration(
+                  fillColor: kCranePurple700,
                   filled: true,
                   labelText: 'Travelers',
                 ),
               ),
             ),
+            SizedBox(height: 8.0),
             PrimaryColorOverride(
               color: kCranePrimaryWhite,
               child: TextField(
                 controller: _dateController,
                 decoration: InputDecoration(
+                  fillColor: kCranePurple700,
                   filled: true,
                   labelText: 'Dates',
                 ),
               ),
             ),
+            SizedBox(height: 8.0),
             PrimaryColorOverride(
               color: kCranePrimaryWhite,
               child: TextField(
                 controller: _locationController,
                 decoration: InputDecoration(
+                  fillColor: kCranePurple700,
                   filled: true,
                   labelText: 'Location',
                 ),
               ),
             ),
           ],
-        )
-      )
+        ),
+      ),
     );
   }
 }

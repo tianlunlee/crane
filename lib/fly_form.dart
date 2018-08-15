@@ -31,52 +31,60 @@ class _FlyFormState extends State<FlyForm> {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        color: kCranePurple900,
-        child: Column(
+        color: kCranePurple800,
+        child: ListView(
+          padding: EdgeInsets.symmetric(horizontal: 24.0),
           children: <Widget>[
             PrimaryColorOverride(
               color: kCranePrimaryWhite,
               child: TextField(
                 controller: _travelerController,
                 decoration: InputDecoration(
+                  fillColor: kCranePurple700,
                   filled: true,
                   labelText: 'Travelers',
                 ),
               ),
             ),
+            SizedBox(height: 8.0),
             PrimaryColorOverride(
               color: kCranePrimaryWhite,
               child: TextField(
                 controller: _countryDestinationController,
                 decoration: InputDecoration(
+                  fillColor: kCranePurple700,
                   filled: true,
                   labelText: 'Country',
                 ),
               ),
             ),
+            SizedBox(height: 8.0),
             PrimaryColorOverride(
               color: kCranePrimaryWhite,
               child: TextField(
                 controller: _destinationController,
                 decoration: InputDecoration(
+                  fillColor: kCranePurple700,
                   filled: true,
                   labelText: 'Destination',
                 ),
               ),
             ),
+            SizedBox(height: 8.0),
             PrimaryColorOverride(
               color: kCranePrimaryWhite,
               child: TextField(
                 controller: _dateController,
                 decoration: InputDecoration(
+                  fillColor: kCranePurple700,
                   filled: true,
                   labelText: 'Dates',
                 ),
               ),
             ),
           ],
-        )
-      )
+        ),
+      ),
     );
   }
 }
