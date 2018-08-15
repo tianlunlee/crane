@@ -54,7 +54,7 @@ class _CraneAppState extends State<CraneApp> {
           FlyForm(),
           SleepForm(),
           EatForm(),
-//          MenuPage(),
+          MenuPage(),
         ],
         frontTitle: Text('CRANE'),
         backTitle: Text('MENU'),

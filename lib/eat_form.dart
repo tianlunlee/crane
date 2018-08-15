@@ -54,7 +54,7 @@ class _EatFormState extends State<EatForm> {
                 decoration: InputDecoration(
                   fillColor: kCranePurple700,
                   filled: true,
-                  labelText: 'Select a Date',
+                  labelText: 'Date',
                 ),
               ),
             ),
@@ -66,7 +66,7 @@ class _EatFormState extends State<EatForm> {
                 decoration: InputDecoration(
                   fillColor: kCranePurple700,
                   filled: true,
-                  labelText: 'Select Time',
+                  labelText: 'Time',
                 ),
               ),
             ),
@@ -78,7 +78,7 @@ class _EatFormState extends State<EatForm> {
                 decoration: InputDecoration(
                   fillColor: kCranePurple700,
                   filled: true,
-                  labelText: 'Select Location',
+                  labelText: 'Location',
                 ),
               ),
             ),

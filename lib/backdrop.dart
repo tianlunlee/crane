@@ -52,8 +52,8 @@ class _FrontLayer extends StatelessWidget {
               children: <Widget>[
                 const ListTile(
                   leading: const Icon(Icons.album),
-                  title: const Text('First'),
-                  subtitle: const Text('Card'),
+                  title: const Text('The Enchanted Nightingale'),
+                  subtitle: const Text('Music by Julie Gable. Lyrics by Sidney Stein.'),
                 ),
               ],
             ),
@@ -309,7 +309,7 @@ class _BackdropState extends State<Backdrop>
   }
 
   Widget _buildFlyStack(BuildContext context, BoxConstraints constraints) {
-    double flyLayerTitleHeight = 292+.0;
+    double flyLayerTitleHeight = 320+.0;
     final Size flyLayerSize = constraints.biggest;
     final double flyLayerTop = flyLayerSize.height - flyLayerTitleHeight;
 
@@ -335,7 +335,7 @@ class _BackdropState extends State<Backdrop>
   }
 
   Widget _buildSleepStack(BuildContext context, BoxConstraints constraints) {
-    double sleepLayerTitleHeight = 355+.0;
+    double sleepLayerTitleHeight = 385+.0;
     final Size sleepLayerSize = constraints.biggest;
     final double sleepLayerTop = sleepLayerSize.height - sleepLayerTitleHeight;
 
@@ -361,7 +361,7 @@ class _BackdropState extends State<Backdrop>
   }
 
   Widget _buildEatStack(BuildContext context, BoxConstraints constraints) {
-    double eatLayerTitleHeight = 292+.0;
+    double eatLayerTitleHeight = 320+.0;
     final Size eatLayerSize = constraints.biggest;
     final double eatLayerTop = eatLayerSize.height - eatLayerTitleHeight;
 
@@ -404,7 +404,7 @@ class _BackdropState extends State<Backdrop>
               icon: Icon(Icons.menu),
               onPressed: () {
                 // Insert Overlay Entry
-                Overlay.of(context).insert(_menuEntry);
+//                Overlay.of(context).insert(_menuEntry);
               },
             ),
           ),
@@ -587,23 +587,23 @@ class HeroAnimation extends StatelessWidget {
           width: 300.0,
           onTap: () {
             Navigator.of(context).push(MaterialPageRoute<Null>(
-                builder: (BuildContext context) {
-                  return Scaffold(
-                    body: Container(
-                      // The blue background emphasizes that it's a new route.
-                      color: Colors.lightBlueAccent,
-                      padding: const EdgeInsets.all(16.0),
-                      alignment: Alignment.topLeft,
-                      child: MenuHero(
-                        menu: 'menu',
-                        width: 100.0,
-                        onTap: () {
-                          Navigator.of(context).pop();
-                        },
-                      ),
+              builder: (BuildContext context) {
+                return Scaffold(
+                  body: Container(
+                    // The blue background emphasizes that it's a new route.
+                    color: Colors.lightBlueAccent,
+                    padding: const EdgeInsets.all(16.0),
+                    alignment: Alignment.topLeft,
+                    child: MenuHero(
+                      menu: 'menu',
+                      width: 100.0,
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      },
                     ),
-                  );
-                }
+                  ),
+                );
+              }
             ));
           },
         ),
