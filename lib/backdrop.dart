@@ -291,66 +291,77 @@ class _BackdropState extends State<Backdrop>
             padding: EdgeInsets.only(top: 36.0, bottom: 10.0),
             height: 150.0,
             width: 300.0,
-            child: TabBar(
-              controller: _tabController,
-              tabs: <Widget>[
-                FlatButton(
-                  child: Text('FLY'),
-                  textColor: kCranePrimaryWhite,
-                  shape: RoundedRectangleBorder(
+            child: Row(
+              children: <Widget>[
+                Container(
+                  height: 64.0,
+                  width: 96.0,
+                  child: FlatButton(
+                    child: Text('FLY'),
+                    textColor: kCranePrimaryWhite,
+                    shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                  ),
-                  onPressed: () {
-                    if (_tabIndex == 0) {
-                      _toggleBackdropLayerVisibility();
-                    }
-                    else {
-                      _tabIndex = 0;
-                      _tabController.animateTo(_tabIndex);
-                      if (!_frontLayerVisible) {
+                    ),
+                    onPressed: () {
+                      if (_tabIndex == 0) {
                         _toggleBackdropLayerVisibility();
                       }
-                    }
-                  },
-                ),
-                FlatButton(
-                  child: Text('SLEEP'),
-                  textColor: kCranePrimaryWhite,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                      else {
+                        _tabIndex = 0;
+                        _tabController.animateTo(_tabIndex);
+                        if (!_frontLayerVisible) {
+                          _toggleBackdropLayerVisibility();
+                        }
+                      }
+                    },
                   ),
-                  onPressed: () {
-                    if (_tabIndex == 1) {
-                      _toggleBackdropLayerVisibility();
-                    }
-                    else {
-                      _tabIndex = 1;
-                      _tabController.animateTo(_tabIndex);
-                      if (!_frontLayerVisible) {
+                ),
+                Container(
+                  height: 64.0,
+                  width: 96.0,
+                  child: FlatButton(
+                    child: Text('SLEEP'),
+                    textColor: kCranePrimaryWhite,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                    ),
+                    onPressed: () {
+                      if (_tabIndex == 1) {
                         _toggleBackdropLayerVisibility();
                       }
-                    }
-                  },
+                      else {
+                        _tabIndex = 1;
+                        _tabController.animateTo(_tabIndex);
+                        if (!_frontLayerVisible) {
+                          _toggleBackdropLayerVisibility();
+                        }
+                      }
+                    },
+                  ),
                 ),
-               FlatButton(
-                child: Text('EAT'),
-                textColor: kCranePrimaryWhite,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                Container (
+                  height: 64.0,
+                  width: 96.0,
+                  child: FlatButton(
+                    child: Text('EAT'),
+                    textColor: kCranePrimaryWhite,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                    ),
+                    onPressed: () {
+                      if (_tabIndex == 2) {
+                        _toggleBackdropLayerVisibility();
+                      }
+                      else {
+                        _tabIndex = 2;
+                        _tabController.animateTo(_tabIndex);
+                        if (!_frontLayerVisible) {
+                          _toggleBackdropLayerVisibility();
+                        }
+                      }
+                    },
+                  ),
                 ),
-                onPressed: () {
-                  if (_tabIndex == 2) {
-                    _toggleBackdropLayerVisibility();
-                  }
-                  else {
-                    _tabIndex = 2;
-                    _tabController.animateTo(_tabIndex);
-                    if (!_frontLayerVisible) {
-                      _toggleBackdropLayerVisibility();
-                    }
-                  }
-                },
-              ),
               ],
             ),
           ),
