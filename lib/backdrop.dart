@@ -14,8 +14,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
+import 'dart:ui';
 
-import 'model/product.dart';
+import 'model/flight.dart';
+import 'model/data.dart';
 import 'app.dart';
 import 'colors.dart';
 //import 'menu_page.dart';
@@ -44,157 +46,30 @@ class _FrontLayer extends StatelessWidget {
       child: new ListView(
         shrinkWrap: true,
         padding: const EdgeInsets.all(20.0),
-        children: <Widget>[
-          // TODO(tianlun): Move Cards elsewhere to reduce clutter
-          new Card(
-            child: new Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                const ListTile(
-                  leading: const Icon(Icons.album),
-                  title: const Text('The Enchanted Nightingale'),
-                  subtitle: const Text('Music by Julie Gable. Lyrics by Sidney Stein.'),
-                ),
-              ],
-            ),
-          ),
-          new Card(
-            child: new Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                const ListTile(
-                  leading: const Icon(Icons.album),
-                  title: const Text('The Enchanted Nightingale'),
-                  subtitle: const Text('Music by Julie Gable. Lyrics by Sidney Stein.'),
-                ),
-              ],
-            ),
-          ),
-          new Card(
-            child: new Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                const ListTile(
-                  leading: const Icon(Icons.album),
-                  title: const Text('The Enchanted Nightingale'),
-                  subtitle: const Text('Music by Julie Gable. Lyrics by Sidney Stein.'),
-                ),
-              ],
-            ),
-          ),
-          new Card(
-            child: new Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                const ListTile(
-                  leading: const Icon(Icons.album),
-                  title: const Text('The Enchanted Nightingale'),
-                  subtitle: const Text('Music by Julie Gable. Lyrics by Sidney Stein.'),
-                ),
-              ],
-            ),
-          ),
-          new Card(
-            child: new Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                const ListTile(
-                  leading: const Icon(Icons.album),
-                  title: const Text('The Enchanted Nightingale'),
-                  subtitle: const Text('Music by Julie Gable. Lyrics by Sidney Stein.'),
-                ),
-              ],
-            ),
-          ),
-          new Card(
-            child: new Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                const ListTile(
-                  leading: const Icon(Icons.album),
-                  title: const Text('The Enchanted Nightingale'),
-                  subtitle: const Text('Music by Julie Gable. Lyrics by Sidney Stein.'),
-                ),
-              ],
-            ),
-          ),
-          new Card(
-            child: new Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                const ListTile(
-                  leading: const Icon(Icons.album),
-                  title: const Text('The Enchanted Nightingale'),
-                  subtitle: const Text('Music by Julie Gable. Lyrics by Sidney Stein.'),
-                ),
-              ],
-            ),
-          ),
-          new Card(
-            child: new Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                const ListTile(
-                  leading: const Icon(Icons.album),
-                  title: const Text('The Enchanted Nightingale'),
-                  subtitle: const Text('Music by Julie Gable. Lyrics by Sidney Stein.'),
-                ),
-              ],
-            ),
-          ),
-          new Card(
-            child: new Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                const ListTile(
-                  leading: const Icon(Icons.album),
-                  title: const Text('The Enchanted Nightingale'),
-                  subtitle: const Text('Music by Julie Gable. Lyrics by Sidney Stein.'),
-                ),
-              ],
-            ),
-          ),
-          new Card(
-            child: new Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                const ListTile(
-                  leading: const Icon(Icons.album),
-                  title: const Text('The Enchanted Nightingale'),
-                  subtitle: const Text('Music by Julie Gable. Lyrics by Sidney Stein.'),
-                ),
-              ],
-            ),
-          ),
-          new Card(
-            child: new Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                const ListTile(
-                  leading: const Icon(Icons.album),
-                  title: const Text('The Enchanted Nightingale'),
-                  subtitle: const Text('Music by Julie Gable. Lyrics by Sidney Stein.'),
-                ),
-              ],
-            ),
-          ),
-          new Card(
-            child: new Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                const ListTile(
-                  leading: const Icon(Icons.album),
-                  title: const Text('Last'),
-                  subtitle: const Text('Card'),
-                ),
-              ],
-            ),
-          ),
-        ],
+        children: _buildFlightCards(context),
       )
     );
   }
+
+  List<Card> _buildFlightCards(BuildContext context) {
+    List<Flight> flights = getFlights(Category.findTrips);
+    return flights.map((flight) {
+      return Card(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            ListTile(
+              leading: Icon(Icons.album),
+              title: Text(flight.destination),
+              subtitle: Text(flight.layover ? 'Layover' : 'Nonstop'),
+            ),
+          ],
+        )
+      );
+    }).toList();
+  }
 }
+
 
 class _BackdropTitle extends AnimatedWidget {
   final Function onPress;
@@ -267,6 +142,7 @@ class _BackdropState extends State<Backdrop>
   final GlobalKey _backdropKey = GlobalKey(debugLabel: 'Backdrop');
   AnimationController _controller;
   OverlayEntry _menuEntry;
+  bool _first;
 
   @override
   void initState() {
@@ -278,6 +154,7 @@ class _BackdropState extends State<Backdrop>
     );
     _menuEntry =
         OverlayEntry(builder: (BuildContext context) => _buildMenu(context));
+    _first = true;
   }
 
 //  @override
@@ -375,8 +252,6 @@ class _BackdropState extends State<Backdrop>
 //      key: _backdropKey,
       children: <Widget>[
         widget.backLayer[2],
-        // Use a boolean that is switched on menu icon press
-        // set above line to a ternary that either displays
         PositionedTransition(
           rect: eatLayerAnimation,
           child: _FrontLayer(
@@ -390,6 +265,7 @@ class _BackdropState extends State<Backdrop>
 
   Widget _buildMainApp(BuildContext context) {
     final _tabController = TabController(length: 3, vsync: this);
+    var _tabIndex = 0;
 
     var appBar = AppBar(
       brightness: Brightness.light,
@@ -405,6 +281,9 @@ class _BackdropState extends State<Backdrop>
               onPressed: () {
                 // Insert Overlay Entry
 //                Overlay.of(context).insert(_menuEntry);
+                setState(() {
+                  _first = false;
+                });
               },
             ),
           ),
@@ -415,30 +294,63 @@ class _BackdropState extends State<Backdrop>
             child: TabBar(
               controller: _tabController,
               tabs: <Widget>[
-                GestureDetector(
-                  onTap: () {
+                FlatButton(
+                  child: Text('FLY'),
+                  textColor: kCranePrimaryWhite,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                  ),
+                  onPressed: () {
+                    if (_tabIndex == 0) {
+                      _toggleBackdropLayerVisibility();
+                    }
+                    else {
+                      _tabIndex = 0;
+                      _tabController.animateTo(_tabIndex);
+                      if (!_frontLayerVisible) {
+                        _toggleBackdropLayerVisibility();
+                      }
+                    }
+                  },
+                ),
+                FlatButton(
+                  child: Text('SLEEP'),
+                  textColor: kCranePrimaryWhite,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                  ),
+                  onPressed: () {
+                    if (_tabIndex == 1) {
+                      _toggleBackdropLayerVisibility();
+                    }
+                    else {
+                      _tabIndex = 1;
+                      _tabController.animateTo(_tabIndex);
+                      if (!_frontLayerVisible) {
+                        _toggleBackdropLayerVisibility();
+                      }
+                    }
+                  },
+                ),
+               FlatButton(
+                child: Text('EAT'),
+                textColor: kCranePrimaryWhite,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                ),
+                onPressed: () {
+                  if (_tabIndex == 2) {
                     _toggleBackdropLayerVisibility();
-                  },
-                  child: Tab(
-                  text: 'FLY',
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                  _toggleBackdropLayerVisibility();
-                  },
-                  child:  Tab(
-                    text: 'SLEEP',
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                  _toggleBackdropLayerVisibility();
-                  },
-                  child:  Tab(
-                    text: 'EAT',
-                  ),
-                ),
+                  }
+                  else {
+                    _tabIndex = 2;
+                    _tabController.animateTo(_tabIndex);
+                    if (!_frontLayerVisible) {
+                      _toggleBackdropLayerVisibility();
+                    }
+                  }
+                },
+              ),
               ],
             ),
           ),
@@ -446,28 +358,35 @@ class _BackdropState extends State<Backdrop>
       ),
     );
 
-    return Scaffold(
-        appBar: appBar,
-        body: TabBarView(
-            controller: _tabController,
-            children: <Widget>[
-              LayoutBuilder(
-                builder: _buildFlyStack,
-              ),
-              LayoutBuilder(
-                builder: _buildSleepStack,
-              ),
-              LayoutBuilder(
-                builder: _buildEatStack,
-              ),
-            ]
-        )
+    return Material(
+      child: Stack(
+        children: <Widget>[
+          Scaffold(
+            appBar: appBar,
+            body: TabBarView(
+              controller: _tabController,
+              children: <Widget>[
+                LayoutBuilder(
+                  builder: _buildFlyStack,
+                ),
+                LayoutBuilder(
+                  builder: _buildSleepStack,
+                ),
+                LayoutBuilder(
+                  builder: _buildEatStack,
+                ),
+              ]
+            ),
+          ),
+        ],
+      ),
     );
   }
 
   Widget _buildMenu(BuildContext context) {
     return Material(
       child: Container(
+        constraints: BoxConstraints(maxWidth: 375.0, maxHeight: 400.0),
         padding: EdgeInsets.only(top: 40.0),
         color: kCranePurple800,
         child: ListView(
@@ -478,7 +397,11 @@ class _BackdropState extends State<Backdrop>
                 semanticLabel: 'back',
               ),
               onPressed: (){
-                _menuEntry.remove();
+                setState(() {
+                  _first = true;
+                });
+//                _menuEntry.remove();
+//              MaterialPageRoute(builder: (BuildContext context) => CraneApp());
               }
             ),
             Text('Find Trips'),
@@ -497,117 +420,19 @@ class _BackdropState extends State<Backdrop>
     // TODO(tianlun): Toggle backdrop with onPressed of current tab
 
     return Material(
-      child: Overlay(
-        initialEntries: <OverlayEntry>[
-          OverlayEntry(builder: (BuildContext context) => _buildMainApp(context)),
-        ],
-//          Scaffold(
-//            appBar: appBar,
-//            body: TabBarView(
-//                controller: _tabController,
-//                children: <Widget>[
-//                  LayoutBuilder(
-//                    builder: _buildFlyStack,
-//                  ),
-//                  LayoutBuilder(
-//                    builder: _buildSleepStack,
-//                  ),
-//                  LayoutBuilder(
-//                    builder: _buildEatStack,
-//                  ),
-//                ]
-//            )
-//        ),
+      child: AnimatedCrossFade(
+        firstChild: _buildMainApp(context),
+        secondChild: _buildMenu(context),
+        crossFadeState: _first ? CrossFadeState.showFirst :
+        CrossFadeState.showSecond,
+        duration: Duration(milliseconds: 500),
       ),
     );
-  }
-}
+//      child: Overlay(
+//        initialEntries: <OverlayEntry>[
+//          OverlayEntry(builder: (BuildContext context) => _buildMainApp(context)),
+//        ],
+//      ),
 
-class MenuHero extends StatelessWidget {
-  const MenuHero({
-    Key key,
-    this.menu,
-    this.onTap,
-    this.width
-  }) : super(key: key);
-
-  final String menu;
-  final VoidCallback onTap;
-  final double width;
-
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: width,
-      child: Hero(
-        tag: menu,
-        child: Material(
-          color: Colors.transparent,
-          child: InkWell(
-            onTap: onTap,
-            child: Container(
-              padding: EdgeInsets.only(top: 40.0),
-              color: kCranePurple800,
-              child: ListView(
-                children: <Widget>[
-                  IconButton(
-                    icon: Icon(
-                      Icons.arrow_back,
-                      semanticLabel: 'back',
-                    ),
-                    onPressed: (){
-                      Navigator.pop(context);
-                    }
-                  ),
-                  Text('Find Trips'),
-                  Text('My Trips'),
-                  Text('Saved Trips'),
-                  Text('Price Alerts'),
-                  Text('My Account'),
-                ],
-              ),
-            ),// overlay here
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class HeroAnimation extends StatelessWidget {
-  Widget build(BuildContext context) {
-//    timeDilation = 5.0; // 1.0 means normal animation speed.
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Basic Hero Animation'),
-      ),
-      body: Center(
-        child: MenuHero(
-          menu: 'menu',
-          width: 300.0,
-          onTap: () {
-            Navigator.of(context).push(MaterialPageRoute<Null>(
-              builder: (BuildContext context) {
-                return Scaffold(
-                  body: Container(
-                    // The blue background emphasizes that it's a new route.
-                    color: Colors.lightBlueAccent,
-                    padding: const EdgeInsets.all(16.0),
-                    alignment: Alignment.topLeft,
-                    child: MenuHero(
-                      menu: 'menu',
-                      width: 100.0,
-                      onTap: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  ),
-                );
-              }
-            ));
-          },
-        ),
-      ),
-    );
   }
 }

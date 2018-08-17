@@ -12,282 +12,282 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'product.dart';
+import 'flight.dart';
 
 // This is where destination info should go
-List<Product> getProducts(Category category) {
-  const allProducts = <Product>[
-    Product(
-      category: Category.myTrips,
+List<Flight> getFlights(Category category) {
+  const allFlights = <Flight>[
+    Flight(
+      category: Category.findTrips,
       id: 0,
       isFeatured: true,
-      name: 'Vagabond sack',
-      price: 120,
+      destination: 'Ann Arbor, Michigan',
+      layover: false,
     ),
-    Product(
-      category: Category.myTrips,
+    Flight(
+      category: Category.findTrips,
       id: 1,
       isFeatured: true,
-      name: 'Stella sunglasses',
-      price: 58,
+      destination: 'Atlanta, Georgia',
+      layover: false,
     ),
-    Product(
-      category: Category.myTrips,
+    Flight(
+      category: Category.findTrips,
       id: 2,
       isFeatured: false,
-      name: 'Whitney belt',
-      price: 35,
+      destination: 'Austin, Texas',
+      layover: false,
     ),
-    Product(
-      category: Category.myTrips,
+    Flight(
+      category: Category.findTrips,
       id: 3,
       isFeatured: true,
-      name: 'Garden strand',
-      price: 98,
+      destination: 'Birmingham, Michigan',
+      layover: false,
     ),
-    Product(
-      category: Category.myTrips,
+    Flight(
+      category: Category.findTrips,
       id: 4,
       isFeatured: false,
-      name: 'Strut earrings',
-      price: 34,
+      destination: 'Boulder, Colorado',
+      layover: false,
     ),
-    Product(
-      category: Category.myTrips,
+    Flight(
+      category: Category.findTrips,
       id: 5,
       isFeatured: false,
-      name: 'Varsity socks',
-      price: 12,
+      destination: 'Cambridge, Massachusetts',
+      layover: false,
     ),
-    Product(
-      category: Category.myTrips,
+    Flight(
+      category: Category.findTrips,
       id: 6,
       isFeatured: false,
-      name: 'Weave keyring',
-      price: 16,
+      destination: 'Chapel Hill, North Carolina',
+      layover: false,
     ),
-    Product(
-      category: Category.myTrips,
+    Flight(
+      category: Category.findTrips,
       id: 7,
       isFeatured: true,
-      name: 'Gatsby hat',
-      price: 40,
+      destination: 'Chicago, Illinois',
+      layover: false,
     ),
-    Product(
-      category: Category.myTrips,
+    Flight(
+      category: Category.findTrips,
       id: 8,
       isFeatured: true,
-      name: 'Shrug bag',
-      price: 198,
+      destination: 'Irvine, California',
+      layover: false,
     ),
-    Product(
-      category: Category.priceAlerts,
+    Flight(
+      category: Category.findTrips,
       id: 9,
       isFeatured: true,
-      name: 'Gilt desk trio',
-      price: 58,
+      destination: 'Kirkland, Washington',
+      layover: false,
     ),
-    Product(
-      category: Category.priceAlerts,
+    Flight(
+      category: Category.findTrips,
       id: 10,
       isFeatured: false,
-      name: 'Copper wire rack',
-      price: 18,
+      destination: 'Kitchener, Ontario',
+      layover: false,
     ),
-    Product(
-      category: Category.priceAlerts,
+    Flight(
+      category: Category.findTrips,
       id: 11,
       isFeatured: false,
-      name: 'Soothe ceramic set',
-      price: 28,
+      destination: 'Los Angeles, California',
+      layover: false,
     ),
-    Product(
-      category: Category.priceAlerts,
+    Flight(
+      category: Category.findTrips,
       id: 12,
       isFeatured: false,
-      name: 'Hurrahs tea set',
-      price: 34,
+      destination: 'Miami, Florida',
+      layover: false,
     ),
-    Product(
-      category: Category.priceAlerts,
+    Flight(
+      category: Category.findTrips,
       id: 13,
       isFeatured: true,
-      name: 'Blue stone mug',
-      price: 18,
+      destination: 'Montreal, Quebec',
+      layover: false,
     ),
-    Product(
-      category: Category.priceAlerts,
+    Flight(
+      category: Category.findTrips,
       id: 14,
       isFeatured: true,
-      name: 'Rainwater tray',
-      price: 27,
+      destination: 'Mountain View, California',
+      layover: false,
     ),
-    Product(
-      category: Category.priceAlerts,
+    Flight(
+      category: Category.findTrips,
       id: 15,
       isFeatured: true,
-      name: 'Chambray napkins',
-      price: 16,
+      destination: 'New York, New York',
+      layover: false,
     ),
-    Product(
-      category: Category.priceAlerts,
+    Flight(
+      category: Category.findTrips,
       id: 16,
       isFeatured: true,
-      name: 'Succulent planters',
-      price: 16,
+      destination: 'Pittsburgh, Pennsylvania',
+      layover: false,
     ),
-    Product(
-      category: Category.priceAlerts,
+    Flight(
+      category: Category.findTrips,
       id: 17,
       isFeatured: false,
-      name: 'Quartet table',
-      price: 175,
+      destination: 'Playa Vista, California',
+      layover: false,
     ),
-    Product(
-      category: Category.priceAlerts,
+    Flight(
+      category: Category.findTrips,
       id: 18,
       isFeatured: true,
-      name: 'Kitchen quattro',
-      price: 129,
+      destination: 'Reston, Virginia',
+      layover: false,
     ),
-    Product(
-      category: Category.savedTrips,
+    Flight(
+      category: Category.findTrips,
       id: 19,
       isFeatured: false,
-      name: 'Clay sweater',
-      price: 48,
+      destination: 'San Bruno, California',
+      layover: false,
     ),
-    Product(
-      category: Category.savedTrips,
+    Flight(
+      category: Category.findTrips,
       id: 20,
       isFeatured: false,
-      name: 'Sea tunic',
-      price: 45,
+      destination: 'San Diego, California',
+      layover: false,
     ),
-    Product(
-      category: Category.savedTrips,
+    Flight(
+      category: Category.findTrips,
       id: 21,
       isFeatured: false,
-      name: 'Plaster tunic',
-      price: 38,
+      destination: 'San Francisco, California',
+      layover: false,
     ),
-    Product(
-      category: Category.savedTrips,
+    Flight(
+      category: Category.findTrips,
       id: 22,
       isFeatured: false,
-      name: 'White pinstripe shirt',
-      price: 70,
+      destination: 'Seattle, Washington',
+      layover: false,
     ),
-    Product(
-      category: Category.savedTrips,
+    Flight(
+      category: Category.findTrips,
       id: 23,
       isFeatured: false,
-      name: 'Chambray shirt',
-      price: 70,
+      destination: 'Sunnyvale, California',
+      layover: false,
     ),
-    Product(
-      category: Category.savedTrips,
+    Flight(
+      category: Category.findTrips,
       id: 24,
       isFeatured: true,
-      name: 'Seabreeze sweater',
-      price: 60,
+      destination: 'Toronto, Ontario',
+      layover: false,
     ),
-    Product(
-      category: Category.savedTrips,
+    Flight(
+      category: Category.findTrips,
       id: 25,
       isFeatured: false,
-      name: 'Gentry jacket',
-      price: 178,
+      destination: 'Washington DC, USA',
+      layover: false,
     ),
-    Product(
-      category: Category.savedTrips,
+    Flight(
+      category: Category.findTrips,
       id: 26,
       isFeatured: false,
-      name: 'Navy trousers',
-      price: 74,
+      destination: 'Belo Horizonte, Brazil',
+      layover: false,
     ),
-    Product(
-      category: Category.savedTrips,
+    Flight(
+      category: Category.findTrips,
       id: 27,
       isFeatured: true,
-      name: 'Walter henley (white)',
-      price: 38,
+      destination: 'Bogota, Colombia',
+      layover: false,
     ),
-    Product(
-      category: Category.savedTrips,
+    Flight(
+      category: Category.findTrips,
       id: 28,
       isFeatured: true,
-      name: 'Surf and perf shirt',
-      price: 48,
+      destination: 'Buenos Aires, Argentina',
+      layover: false,
     ),
-    Product(
-      category: Category.savedTrips,
+    Flight(
+      category: Category.findTrips,
       id: 29,
       isFeatured: true,
-      name: 'Ginger scarf',
-      price: 98,
+      destination: 'Mexico City, Mexico',
+      layover: false,
     ),
-    Product(
-      category: Category.savedTrips,
+    Flight(
+      category: Category.findTrips,
       id: 30,
       isFeatured: true,
-      name: 'Ramona crossover',
-      price: 68,
+      destination: 'Santiago, Chile',
+      layover: false,
     ),
-    Product(
-      category: Category.savedTrips,
+    Flight(
+      category: Category.findTrips,
       id: 31,
       isFeatured: false,
-      name: 'Chambray shirt',
-      price: 38,
+      destination: 'Sao Paolo, Brazil',
+      layover: false,
     ),
-    Product(
-      category: Category.savedTrips,
+    Flight(
+      category: Category.findTrips,
       id: 32,
       isFeatured: false,
-      name: 'Classic white collar',
-      price: 58,
+      destination: 'Aarhus, Denmark',
+      layover: false,
     ),
-    Product(
-      category: Category.savedTrips,
+    Flight(
+      category: Category.findTrips,
       id: 33,
       isFeatured: true,
-      name: 'Cerise scallop tee',
-      price: 42,
+      destination: 'Amsterdam, Netherlands',
+      layover: false,
     ),
-    Product(
-      category: Category.savedTrips,
+    Flight(
+      category: Category.findTrips,
       id: 34,
       isFeatured: false,
-      name: 'Shoulder rolls tee',
-      price: 27,
+      destination: 'Athens, Greece',
+      layover: false,
     ),
-    Product(
-      category: Category.savedTrips,
+    Flight(
+      category: Category.findTrips,
       id: 35,
       isFeatured: false,
-      name: 'Grey slouch tank',
-      price: 24,
+      destination: 'Berlin, Germany',
+      layover: false,
     ),
-    Product(
-      category: Category.savedTrips,
+    Flight(
+      category: Category.findTrips,
       id: 36,
       isFeatured: false,
-      name: 'Sunshirt dress',
-      price: 58,
+      destination: 'Brussels, Belgium',
+      layover: false,
     ),
-    Product(
-      category: Category.savedTrips,
+    Flight(
+      category: Category.findTrips,
       id: 37,
       isFeatured: true,
-      name: 'Fine lines tee',
-      price: 58,
+      destination: 'Copenhagen, Denmark',
+      layover: false,
     ),
   ];
   if (category == Category.findTrips) {
-    return allProducts;
+    return allFlights;
   } else {
-    return allProducts.where((Product p) {
+    return allFlights.where((Flight p) {
       return p.category == category;
     }).toList();
   }
