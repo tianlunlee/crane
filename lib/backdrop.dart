@@ -43,7 +43,7 @@ class _FrontLayer extends StatelessWidget {
           topRight: Radius.circular(16.0)
         ),
       ),
-      child: new ListView(
+      child: ListView(
         shrinkWrap: true,
         padding: const EdgeInsets.all(20.0),
         children: _buildFlightCards(context),
@@ -70,7 +70,7 @@ class _FrontLayer extends StatelessWidget {
   }
 }
 
-
+// TODO(tianlun): Remove or repurpose
 class _BackdropTitle extends AnimatedWidget {
   final Function onPress;
   final Widget frontTitle;
@@ -281,9 +281,13 @@ class _BackdropState extends State<Backdrop>
               onPressed: () {
                 // Insert Overlay Entry
 //                Overlay.of(context).insert(_menuEntry);
-                setState(() {
-                  _first = false;
-                });
+                Navigator.push(
+                  context,
+                  MenuPageRoute((BuildContext context) => _buildMenu(context))
+                );
+//                setState(() {
+//                  _first = false;
+//                });
               },
             ),
           ),
@@ -408,10 +412,11 @@ class _BackdropState extends State<Backdrop>
                 semanticLabel: 'back',
               ),
               onPressed: (){
-                setState(() {
-                  _first = true;
-                });
+//                setState(() {
+//                  _first = true;
+//                });
 //                _menuEntry.remove();
+              Navigator.pop(context);
 //              MaterialPageRoute(builder: (BuildContext context) => CraneApp());
               }
             ),
@@ -429,21 +434,42 @@ class _BackdropState extends State<Backdrop>
   @override
   Widget build(BuildContext context) {
     // TODO(tianlun): Toggle backdrop with onPressed of current tab
-
+//    return _buildMainApp(context);
     return Material(
-      child: AnimatedCrossFade(
-        firstChild: _buildMainApp(context),
-        secondChild: _buildMenu(context),
-        crossFadeState: _first ? CrossFadeState.showFirst :
-        CrossFadeState.showSecond,
-        duration: Duration(milliseconds: 500),
+//      child: AnimatedCrossFade(
+//        firstChild: _buildMainApp(context),
+//        secondChild: _buildMenu(context),
+//        crossFadeState: _first ? CrossFadeState.showFirst :
+//        CrossFadeState.showSecond,
+//        duration: Duration(milliseconds: 500),
+//      ),
+//    );
+      child: Overlay(
+        initialEntries: <OverlayEntry>[
+          OverlayEntry(builder: (BuildContext context) => _buildMainApp(context)),
+        ],
       ),
     );
-//      child: Overlay(
-//        initialEntries: <OverlayEntry>[
-//          OverlayEntry(builder: (BuildContext context) => _buildMainApp(context)),
-//        ],
-//      ),
+  }
+}
 
+class MenuPageRoute<T> extends MaterialPageRoute {
+  MenuPageRoute(WidgetBuilder builder) : super(builder: builder);
+
+  @override
+  Widget buildTransitions(
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+    Widget child
+  )
+  {
+    return SlideTransition(
+      position: Tween<Offset>(
+        begin: Offset(0.0, -1.0),
+        end: Offset.zero,
+      ).animate(animation),
+      child: child, // child is the value returned by pageBuilder
+    );
   }
 }
