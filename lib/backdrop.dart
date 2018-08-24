@@ -21,7 +21,13 @@ import 'model/data.dart';
 import 'app.dart';
 import 'colors.dart';
 //import 'menu_page.dart';
+
+enum MenuStatus { showMenu, hideMenu, toggleForm }
+enum FrontLayerStatus { showForm, hideForm}
+
 double _kFlingVelocity = 2.0;
+MenuStatus _menuStatus = MenuStatus.toggleForm;
+FrontLayerStatus _frontLayerStatus = FrontLayerStatus.showForm;
 
 class _FrontLayer extends StatelessWidget {
   const _FrontLayer({
@@ -141,9 +147,8 @@ class _BackdropState extends State<Backdrop>
 
   final GlobalKey _backdropKey = GlobalKey(debugLabel: 'Backdrop');
   AnimationController _controller;
-  OverlayEntry _menuEntry;
-  bool _first;
-
+  var _targetOpacity;
+  var _tabIndex;
   @override
   void initState() {
     super.initState();
@@ -152,9 +157,8 @@ class _BackdropState extends State<Backdrop>
       value: 1.0,
       vsync: this,
     );
-    _menuEntry =
-        OverlayEntry(builder: (BuildContext context) => _buildMenu(context));
-    _first = true;
+    _targetOpacity = 0.0;
+    _tabIndex = 0;
   }
 
 //  @override
@@ -162,8 +166,8 @@ class _BackdropState extends State<Backdrop>
 //    super.didUpdateWidget(old);
 //    // TODO(tianlun): Update to Crane categories
 //    if (widget.currentCategory != old.currentCategory) {
-//      _toggleBackdropLayerVisibility();
-//    } else if (!_frontLayerVisible) {
+//      _flingFrontLayer();
+//    } else if (_frontLayerStatus == FrontLayerStatus.hideForm) {
 //      _controller.fling(velocity: _kFlingVelocity);
 //    }
 //  }
@@ -180,9 +184,50 @@ class _BackdropState extends State<Backdrop>
         status == AnimationStatus.forward;
   }
 
-  void _toggleBackdropLayerVisibility() {
-    _controller.fling(
-        velocity: _frontLayerVisible ? -_kFlingVelocity : _kFlingVelocity);
+  void _flingFrontLayer() {
+    _controller.fling(velocity: _kFlingVelocity);
+  }
+
+  Animation<RelativeRect> _buildLayerAnimation (BuildContext context, double layerTop) {
+    Animation<RelativeRect> layerAnimation;
+
+    if (_menuStatus == MenuStatus.toggleForm && _frontLayerStatus == FrontLayerStatus.showForm) {
+      return layerAnimation = RelativeRectTween(
+        begin: RelativeRect.fromLTRB(0.0, 0.0, 0.0, 0.0),
+        end: RelativeRect.fromLTRB(0.0, layerTop, 0.0, 0.0),
+      ).animate(_controller.view);
+    }
+    else if (_menuStatus == MenuStatus.toggleForm && _frontLayerStatus == FrontLayerStatus.hideForm) {
+      return layerAnimation = RelativeRectTween(
+        begin: RelativeRect.fromLTRB(0.0, layerTop, 0.0, 0.0),
+        end: RelativeRect.fromLTRB(0.0, 0.0, 0.0, 0.0),
+      ).animate(_controller.view);
+    }
+    else if (_menuStatus == MenuStatus.hideMenu && _frontLayerStatus == FrontLayerStatus.showForm) {
+      layerAnimation = RelativeRectTween(
+        begin: RelativeRect.fromLTRB(0.0, 550.0, 0.0, 0.0),
+        end: RelativeRect.fromLTRB(0.0, layerTop, 0.0, 0.0),
+      ).animate(_controller.view);
+    }
+    else if (_menuStatus == MenuStatus.hideMenu && _frontLayerStatus == FrontLayerStatus.hideForm) {
+      layerAnimation = RelativeRectTween(
+        begin: RelativeRect.fromLTRB(0.0, 550.0, 0.0, 0.0),
+        end: RelativeRect.fromLTRB(0.0, 0.0, 0.0, 0.0),
+      ).animate(_controller.view);
+    }
+    else if (_menuStatus == MenuStatus.showMenu && _frontLayerStatus == FrontLayerStatus.showForm) {
+      layerAnimation = RelativeRectTween(
+        begin: RelativeRect.fromLTRB(0.0, layerTop, 0.0, 0.0),
+        end: RelativeRect.fromLTRB(0.0, 550.0, 0.0, 0.0),
+      ).animate(_controller.view);
+    }
+    else { // _menuStatus == MenuStatus.showMenu && _frontLayerStatus == FrontLayerStatus.hideForm
+      layerAnimation = RelativeRectTween(
+        begin: RelativeRect.fromLTRB(0.0, 0.0, 0.0, 0.0),
+        end: RelativeRect.fromLTRB(0.0, 550.0, 0.0, 0.0),
+      ).animate(_controller.view);
+    }
+    return layerAnimation;
   }
 
   Widget _buildFlyStack(BuildContext context, BoxConstraints constraints) {
@@ -190,11 +235,8 @@ class _BackdropState extends State<Backdrop>
     final Size flyLayerSize = constraints.biggest;
     final double flyLayerTop = flyLayerSize.height - flyLayerTitleHeight;
 
-    Animation<RelativeRect> flyLayerAnimation = RelativeRectTween(
-      begin: RelativeRect.fromLTRB(0.0, 0.0, 0.0, 0.0),
-      end: RelativeRect.fromLTRB(
-        0.0, flyLayerTop, 0.0, 0.0),
-    ).animate(_controller.view);
+    Animation<RelativeRect> flyLayerAnimation =
+        _buildLayerAnimation(context, flyLayerTop);
 
     return Stack(
 //      key: _backdropKey,
@@ -203,7 +245,7 @@ class _BackdropState extends State<Backdrop>
         PositionedTransition(
           rect: flyLayerAnimation,
           child: _FrontLayer(
-            onTap: _toggleBackdropLayerVisibility,
+            onTap: _flingFrontLayer,
             child: widget.frontLayer,
           ),
         ),
@@ -216,11 +258,8 @@ class _BackdropState extends State<Backdrop>
     final Size sleepLayerSize = constraints.biggest;
     final double sleepLayerTop = sleepLayerSize.height - sleepLayerTitleHeight;
 
-    Animation<RelativeRect> sleepLayerAnimation = RelativeRectTween(
-      begin: RelativeRect.fromLTRB(0.0, 0.0, 0.0, 0.0),
-      end: RelativeRect.fromLTRB(
-          0.0, sleepLayerTop, 0.0, 0.0),
-    ).animate(_controller.view);
+    Animation<RelativeRect> sleepLayerAnimation =
+        _buildLayerAnimation(context, sleepLayerTop);
 
     return Stack(
 //      key: _backdropKey,
@@ -229,7 +268,7 @@ class _BackdropState extends State<Backdrop>
         PositionedTransition(
           rect: sleepLayerAnimation,
           child: _FrontLayer(
-            onTap: _toggleBackdropLayerVisibility,
+            onTap: _flingFrontLayer,
             child: widget.frontLayer,
           ),
         ),
@@ -238,15 +277,12 @@ class _BackdropState extends State<Backdrop>
   }
 
   Widget _buildEatStack(BuildContext context, BoxConstraints constraints) {
-    double eatLayerTitleHeight = 320+.0;
+    double eatLayerTitleHeight = 320+.0; // MediaQuery().of(context)
     final Size eatLayerSize = constraints.biggest;
     final double eatLayerTop = eatLayerSize.height - eatLayerTitleHeight;
 
-    Animation<RelativeRect> eatLayerAnimation = RelativeRectTween(
-      begin: RelativeRect.fromLTRB(0.0, 0.0, 0.0, 0.0),
-      end: RelativeRect.fromLTRB(
-          0.0, eatLayerTop, 0.0, 0.0),
-    ).animate(_controller.view);
+    Animation<RelativeRect> eatLayerAnimation =
+    _buildLayerAnimation(context, eatLayerTop);
 
     return Stack(
 //      key: _backdropKey,
@@ -255,7 +291,7 @@ class _BackdropState extends State<Backdrop>
         PositionedTransition(
           rect: eatLayerAnimation,
           child: _FrontLayer(
-            onTap: _toggleBackdropLayerVisibility,
+            onTap: _flingFrontLayer,
               child: widget.frontLayer,
           ),
         ),
@@ -265,7 +301,6 @@ class _BackdropState extends State<Backdrop>
 
   Widget _buildMainApp(BuildContext context) {
     final _tabController = TabController(length: 3, vsync: this);
-    var _tabIndex = 0;
 
     var appBar = AppBar(
       brightness: Brightness.light,
@@ -279,15 +314,11 @@ class _BackdropState extends State<Backdrop>
             child: IconButton(
               icon: Icon(Icons.menu),
               onPressed: () {
-                // Insert Overlay Entry
-//                Overlay.of(context).insert(_menuEntry);
-                Navigator.push(
-                  context,
-                  MenuPageRoute((BuildContext context) => _buildMenu(context))
-                );
-//                setState(() {
-//                  _first = false;
-//                });
+                setState(() {
+                  _targetOpacity = 1.0;
+                  _menuStatus = MenuStatus.showMenu;
+                });
+                _flingFrontLayer();
               },
             ),
           ),
@@ -308,13 +339,25 @@ class _BackdropState extends State<Backdrop>
                     ),
                     onPressed: () {
                       if (_tabIndex == 0) {
-                        _toggleBackdropLayerVisibility();
+                        setState(() {
+                          _menuStatus = MenuStatus.toggleForm;
+                        });
+                        _flingFrontLayer();
+                        setState(() {
+                          _frontLayerStatus == FrontLayerStatus.showForm ?
+                          _frontLayerStatus = FrontLayerStatus.hideForm :
+                          _frontLayerStatus = FrontLayerStatus.showForm;
+                        });
                       }
                       else {
                         _tabIndex = 0;
                         _tabController.animateTo(_tabIndex);
-                        if (!_frontLayerVisible) {
-                          _toggleBackdropLayerVisibility();
+                        if (_frontLayerStatus == FrontLayerStatus.hideForm) {
+                          setState(() {
+                            _frontLayerStatus = FrontLayerStatus.showForm;
+                            _menuStatus = MenuStatus.toggleForm;
+                          });
+                          _flingFrontLayer();
                         }
                       }
                     },
@@ -331,19 +374,31 @@ class _BackdropState extends State<Backdrop>
                     ),
                     onPressed: () {
                       if (_tabIndex == 1) {
-                        _toggleBackdropLayerVisibility();
+                        setState(() {
+                          _menuStatus = MenuStatus.toggleForm;
+                        });
+                        _flingFrontLayer();
+                        setState(() {
+                          _frontLayerStatus == FrontLayerStatus.showForm ?
+                          _frontLayerStatus = FrontLayerStatus.hideForm :
+                          _frontLayerStatus = FrontLayerStatus.showForm;
+                        });
                       }
                       else {
                         _tabIndex = 1;
                         _tabController.animateTo(_tabIndex);
-                        if (!_frontLayerVisible) {
-                          _toggleBackdropLayerVisibility();
+                        if (_frontLayerStatus == FrontLayerStatus.hideForm) {
+                          setState(() {
+                            _frontLayerStatus = FrontLayerStatus.showForm;
+                            _menuStatus = MenuStatus.toggleForm;
+                          });
+                          _flingFrontLayer();
                         }
                       }
                     },
                   ),
                 ),
-                Container (
+                Container(
                   height: 64.0,
                   width: 96.0,
                   child: FlatButton(
@@ -354,13 +409,25 @@ class _BackdropState extends State<Backdrop>
                     ),
                     onPressed: () {
                       if (_tabIndex == 2) {
-                        _toggleBackdropLayerVisibility();
+                        setState(() {
+                          _menuStatus = MenuStatus.toggleForm;
+                        });
+                        _flingFrontLayer();
+                        setState(() {
+                          _frontLayerStatus == FrontLayerStatus.showForm ?
+                          _frontLayerStatus = FrontLayerStatus.hideForm :
+                          _frontLayerStatus = FrontLayerStatus.showForm;
+                        });
                       }
                       else {
                         _tabIndex = 2;
                         _tabController.animateTo(_tabIndex);
-                        if (!_frontLayerVisible) {
-                          _toggleBackdropLayerVisibility();
+                        if (_frontLayerStatus == FrontLayerStatus.hideForm) {
+                          setState(() {
+                            _frontLayerStatus = FrontLayerStatus.showForm;
+                            _menuStatus = MenuStatus.toggleForm;
+                          });
+                          _flingFrontLayer();
                         }
                       }
                     },
@@ -372,7 +439,6 @@ class _BackdropState extends State<Backdrop>
         ],
       ),
     );
-
     return Material(
       child: Stack(
         children: <Widget>[
@@ -390,9 +456,20 @@ class _BackdropState extends State<Backdrop>
                 LayoutBuilder(
                   builder: _buildEatStack,
                 ),
-              ]
+              ],
             ),
           ),
+          _targetOpacity == 1.0 ?
+              Opacity(opacity: 1.0,
+              child: _buildMenu(context)
+//          FadeTransition(
+//            opacity: _controller,
+//            child: AnimatedOpacity(
+//              opacity: 1.0,
+//              child: _buildMenu(context),
+//              duration: Duration(milliseconds: 500),
+//            )
+          ) : Container(),
         ],
       ),
     );
@@ -412,12 +489,10 @@ class _BackdropState extends State<Backdrop>
                 semanticLabel: 'back',
               ),
               onPressed: (){
-//                setState(() {
-//                  _first = true;
-//                });
-//                _menuEntry.remove();
-              Navigator.pop(context);
-//              MaterialPageRoute(builder: (BuildContext context) => CraneApp());
+                setState(() {
+                  _targetOpacity = 0.0;
+                  _menuStatus = MenuStatus.hideMenu;
+                });
               }
             ),
             Text('Find Trips'),
@@ -433,43 +508,8 @@ class _BackdropState extends State<Backdrop>
 
   @override
   Widget build(BuildContext context) {
-    // TODO(tianlun): Toggle backdrop with onPressed of current tab
-//    return _buildMainApp(context);
     return Material(
-//      child: AnimatedCrossFade(
-//        firstChild: _buildMainApp(context),
-//        secondChild: _buildMenu(context),
-//        crossFadeState: _first ? CrossFadeState.showFirst :
-//        CrossFadeState.showSecond,
-//        duration: Duration(milliseconds: 500),
-//      ),
-//    );
-      child: Overlay(
-        initialEntries: <OverlayEntry>[
-          OverlayEntry(builder: (BuildContext context) => _buildMainApp(context)),
-        ],
-      ),
-    );
-  }
-}
-
-class MenuPageRoute<T> extends MaterialPageRoute {
-  MenuPageRoute(WidgetBuilder builder) : super(builder: builder);
-
-  @override
-  Widget buildTransitions(
-    BuildContext context,
-    Animation<double> animation,
-    Animation<double> secondaryAnimation,
-    Widget child
-  )
-  {
-    return SlideTransition(
-      position: Tween<Offset>(
-        begin: Offset(0.0, -1.0),
-        end: Offset.zero,
-      ).animate(animation),
-      child: child, // child is the value returned by pageBuilder
+      child: _buildMainApp(context),
     );
   }
 }

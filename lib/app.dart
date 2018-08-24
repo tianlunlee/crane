@@ -102,7 +102,6 @@ ThemeData _buildCraneTheme() {
     buttonTheme: ButtonThemeData(
       textTheme: ButtonTextTheme.accent,
     ),
-  // these text themes come from ThemeData.light?
     textTheme: _buildCraneTextTheme(base.textTheme),
     primaryTextTheme: _buildCraneTextTheme(base.primaryTextTheme),
     accentTextTheme: _buildCraneTextTheme(base.accentTextTheme),
