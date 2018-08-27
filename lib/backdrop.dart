@@ -291,6 +291,26 @@ class _BackdropState extends State<Backdrop>
 
   Widget _buildMainApp(BuildContext context) {
 
+    void handleTabs (var tabIndex) {
+      if (_tabController.index == tabIndex) {
+        setState(() {
+          _menuStatus = MenuStatus.toggleForm;
+          _frontLayerStatus == FrontLayerStatus.showForm ?
+          _frontLayerStatus = FrontLayerStatus.hideForm :
+          _frontLayerStatus = FrontLayerStatus.showForm;
+        });
+      }
+      else {
+        _tabController.animateTo(tabIndex);
+        if (_frontLayerStatus == FrontLayerStatus.hideForm) {
+          setState(() {
+            _menuStatus = MenuStatus.toggleForm;
+            _frontLayerStatus = FrontLayerStatus.showForm;
+          });
+        }
+      }
+    };
+
     var appBar = AppBar(
       brightness: Brightness.light,
       elevation: 0.0,
@@ -325,25 +345,7 @@ class _BackdropState extends State<Backdrop>
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(12.0)),
                     ),
-                    onPressed: () {
-                      if (_tabController.index == 0) {
-                        setState(() {
-                          _menuStatus = MenuStatus.toggleForm;
-                          _frontLayerStatus == FrontLayerStatus.showForm ?
-                          _frontLayerStatus = FrontLayerStatus.hideForm :
-                          _frontLayerStatus = FrontLayerStatus.showForm;
-                        });
-                      }
-                      else {
-                        _tabController.animateTo(0);
-                        if (_frontLayerStatus == FrontLayerStatus.hideForm) {
-                          setState(() {
-                            _menuStatus = MenuStatus.toggleForm;
-                            _frontLayerStatus = FrontLayerStatus.showForm;
-                          });
-                        }
-                      }
-                    },
+                    onPressed: () => handleTabs(0),
                   ),
                 ),
                 Container(
@@ -355,27 +357,7 @@ class _BackdropState extends State<Backdrop>
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(12.0)),
                     ),
-                    onPressed: () {
-                      var _prevIndex = _tabController.index;
-                      if (_prevIndex == 1) {
-                        setState(() {
-                          _menuStatus = MenuStatus.toggleForm;
-                          _frontLayerStatus == FrontLayerStatus.showForm ?
-                          _frontLayerStatus = FrontLayerStatus.hideForm :
-                          _frontLayerStatus = FrontLayerStatus.showForm;
-                        });
-                      }
-                      else {
-                        _tabController.animateTo(1);
-                        _tabController.index = 1;
-                        if (_frontLayerStatus == FrontLayerStatus.hideForm) {
-                          setState(() {
-                            _menuStatus = MenuStatus.toggleForm;
-                            _frontLayerStatus = FrontLayerStatus.showForm;
-                          });
-                        }
-                      }
-                    },
+                    onPressed: () => handleTabs(1),
                   ),
                 ),
                 Container(
@@ -387,27 +369,7 @@ class _BackdropState extends State<Backdrop>
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(12.0)),
                     ),
-                    onPressed: () {
-                      if (_tabController.index == 2) {
-                        setState(() {
-                          _menuStatus = MenuStatus.toggleForm;
-                          _frontLayerStatus == FrontLayerStatus.showForm ?
-                          _frontLayerStatus = FrontLayerStatus.hideForm :
-                          _frontLayerStatus = FrontLayerStatus.showForm;
-//                          _flingFrontLayer();
-                        });
-                      }
-                      else {
-                        _tabController.animateTo(2);
-                        if (_frontLayerStatus == FrontLayerStatus.hideForm) {
-                          setState(() {
-                            _menuStatus = MenuStatus.toggleForm;
-                            _frontLayerStatus = FrontLayerStatus.showForm;
-//                            _flingFrontLayer();
-                          });
-                        }
-                      }
-                    },
+                    onPressed: () => handleTabs(2),
                   ),
                 ),
               ],
