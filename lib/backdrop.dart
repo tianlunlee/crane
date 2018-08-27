@@ -148,7 +148,7 @@ class _BackdropState extends State<Backdrop>
   final GlobalKey _backdropKey = GlobalKey(debugLabel: 'Backdrop');
   AnimationController _controller;
   var _targetOpacity;
-  var _tabIndex;
+
   @override
   void initState() {
     super.initState();
@@ -158,7 +158,6 @@ class _BackdropState extends State<Backdrop>
       vsync: this,
     );
     _targetOpacity = 0.0;
-    _tabIndex = 0;
   }
 
 //  @override
@@ -338,7 +337,7 @@ class _BackdropState extends State<Backdrop>
                       borderRadius: BorderRadius.all(Radius.circular(12.0)),
                     ),
                     onPressed: () {
-                      if (_tabIndex == 0) {
+                      if (_tabController.index == 0) {
                         setState(() {
                           _menuStatus = MenuStatus.toggleForm;
                         });
@@ -350,12 +349,11 @@ class _BackdropState extends State<Backdrop>
                         });
                       }
                       else {
-                        _tabIndex = 0;
-                        _tabController.animateTo(_tabIndex);
+                        _tabController.animateTo(0);
                         if (_frontLayerStatus == FrontLayerStatus.hideForm) {
                           setState(() {
-                            _frontLayerStatus = FrontLayerStatus.showForm;
                             _menuStatus = MenuStatus.toggleForm;
+                            _frontLayerStatus = FrontLayerStatus.showForm;
                           });
                           _flingFrontLayer();
                         }
@@ -373,7 +371,7 @@ class _BackdropState extends State<Backdrop>
                       borderRadius: BorderRadius.all(Radius.circular(12.0)),
                     ),
                     onPressed: () {
-                      if (_tabIndex == 1) {
+                      if (_tabController.index == 1) {
                         setState(() {
                           _menuStatus = MenuStatus.toggleForm;
                         });
@@ -385,12 +383,11 @@ class _BackdropState extends State<Backdrop>
                         });
                       }
                       else {
-                        _tabIndex = 1;
-                        _tabController.animateTo(_tabIndex);
+                        _tabController.animateTo(1);
                         if (_frontLayerStatus == FrontLayerStatus.hideForm) {
                           setState(() {
-                            _frontLayerStatus = FrontLayerStatus.showForm;
                             _menuStatus = MenuStatus.toggleForm;
+                            _frontLayerStatus = FrontLayerStatus.showForm;
                           });
                           _flingFrontLayer();
                         }
@@ -408,7 +405,7 @@ class _BackdropState extends State<Backdrop>
                       borderRadius: BorderRadius.all(Radius.circular(12.0)),
                     ),
                     onPressed: () {
-                      if (_tabIndex == 2) {
+                      if (_tabController.index == 2) {
                         setState(() {
                           _menuStatus = MenuStatus.toggleForm;
                         });
@@ -420,12 +417,11 @@ class _BackdropState extends State<Backdrop>
                         });
                       }
                       else {
-                        _tabIndex = 2;
-                        _tabController.animateTo(_tabIndex);
+                        _tabController.animateTo(2);
                         if (_frontLayerStatus == FrontLayerStatus.hideForm) {
                           setState(() {
-                            _frontLayerStatus = FrontLayerStatus.showForm;
                             _menuStatus = MenuStatus.toggleForm;
+                            _frontLayerStatus = FrontLayerStatus.showForm;
                           });
                           _flingFrontLayer();
                         }
@@ -460,15 +456,13 @@ class _BackdropState extends State<Backdrop>
             ),
           ),
           _targetOpacity == 1.0 ?
-              Opacity(opacity: 1.0,
-              child: _buildMenu(context)
-//          FadeTransition(
-//            opacity: _controller,
-//            child: AnimatedOpacity(
-//              opacity: 1.0,
-//              child: _buildMenu(context),
-//              duration: Duration(milliseconds: 500),
-//            )
+          FadeTransition(
+            opacity: _controller,
+            child: AnimatedOpacity(
+              opacity: 1.0,
+              child: _buildMenu(context),
+              duration: Duration(milliseconds: 500),
+            )
           ) : Container(),
         ],
       ),
