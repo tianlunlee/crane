@@ -23,11 +23,11 @@ import 'colors.dart';
 //import 'menu_page.dart';
 
 enum MenuStatus { showMenu, hideMenu, toggleForm }
-enum FrontLayerStatus { showForm, hideForm }
+
 
 double _kFlingVelocity = 2.0;
 MenuStatus _menuStatus = MenuStatus.toggleForm;
-FrontLayerStatus _frontLayerStatus = FrontLayerStatus.showForm;
+bool _showForm = true;
 
 class _FrontLayer extends StatelessWidget {
   const _FrontLayer({
@@ -181,37 +181,37 @@ class _BackdropState extends State<Backdrop>
   Animation<RelativeRect> _buildLayerAnimation (BuildContext context, double layerTop) {
     Animation<RelativeRect> layerAnimation;
 
-    if (_menuStatus == MenuStatus.toggleForm && _frontLayerStatus == FrontLayerStatus.showForm) {
-      return layerAnimation = RelativeRectTween(
+    if (_menuStatus == MenuStatus.toggleForm && _showForm) {
+      layerAnimation = RelativeRectTween(
         begin: RelativeRect.fromLTRB(0.0, 0.0, 0.0, 0.0),
         end: RelativeRect.fromLTRB(0.0, layerTop, 0.0, 0.0),
       ).animate(_controller.view);
     }
-    else if (_menuStatus == MenuStatus.toggleForm && _frontLayerStatus == FrontLayerStatus.hideForm) {
-      return layerAnimation = RelativeRectTween(
+    else if (_menuStatus == MenuStatus.toggleForm && !_showForm) {
+      layerAnimation = RelativeRectTween(
         begin: RelativeRect.fromLTRB(0.0, layerTop, 0.0, 0.0),
         end: RelativeRect.fromLTRB(0.0, 0.0, 0.0, 0.0),
       ).animate(_controller.view);
     }
-    else if (_menuStatus == MenuStatus.hideMenu && _frontLayerStatus == FrontLayerStatus.showForm) {
+    else if (_menuStatus == MenuStatus.hideMenu && _showForm) {
       layerAnimation = RelativeRectTween(
         begin: RelativeRect.fromLTRB(0.0, 550.0, 0.0, 0.0),
         end: RelativeRect.fromLTRB(0.0, layerTop, 0.0, 0.0),
       ).animate(_controller.view);
     }
-    else if (_menuStatus == MenuStatus.hideMenu && _frontLayerStatus == FrontLayerStatus.hideForm) {
+    else if (_menuStatus == MenuStatus.hideMenu && !_showForm) {
       layerAnimation = RelativeRectTween(
         begin: RelativeRect.fromLTRB(0.0, 550.0, 0.0, 0.0),
         end: RelativeRect.fromLTRB(0.0, 0.0, 0.0, 0.0),
       ).animate(_controller.view);
     }
-    else if (_menuStatus == MenuStatus.showMenu && _frontLayerStatus == FrontLayerStatus.showForm) {
+    else if (_menuStatus == MenuStatus.showMenu && _showForm) {
       layerAnimation = RelativeRectTween(
         begin: RelativeRect.fromLTRB(0.0, layerTop, 0.0, 0.0),
         end: RelativeRect.fromLTRB(0.0, 550.0, 0.0, 0.0),
       ).animate(_controller.view);
     }
-    else { // _menuStatus == MenuStatus.showMenu && _frontLayerStatus == FrontLayerStatus.hideForm
+    else { // _menuStatus == MenuStatus.showMenu && !_showForm
       layerAnimation = RelativeRectTween(
         begin: RelativeRect.fromLTRB(0.0, 0.0, 0.0, 0.0),
         end: RelativeRect.fromLTRB(0.0, 550.0, 0.0, 0.0),
@@ -295,17 +295,15 @@ class _BackdropState extends State<Backdrop>
       if (_tabController.index == tabIndex) {
         setState(() {
           _menuStatus = MenuStatus.toggleForm;
-          _frontLayerStatus == FrontLayerStatus.showForm ?
-          _frontLayerStatus = FrontLayerStatus.hideForm :
-          _frontLayerStatus = FrontLayerStatus.showForm;
+          _showForm = !_showForm;
         });
       }
       else {
         _tabController.animateTo(tabIndex);
-        if (_frontLayerStatus == FrontLayerStatus.hideForm) {
+        if (!_showForm) {
           setState(() {
             _menuStatus = MenuStatus.toggleForm;
-            _frontLayerStatus = FrontLayerStatus.showForm;
+            _showForm = !_showForm;
           });
         }
       }
