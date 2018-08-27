@@ -52,6 +52,7 @@ class _FlyFormState extends State<FlyForm> {
               child: TextField(
                 controller: _countryDestinationController,
                 decoration: InputDecoration(
+                  border: InputBorder.none, 
                   fillColor: kCranePurple700,
                   filled: true,
                   labelText: 'Country',

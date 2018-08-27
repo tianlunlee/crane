@@ -23,7 +23,7 @@ import 'colors.dart';
 //import 'menu_page.dart';
 
 enum MenuStatus { showMenu, hideMenu, toggleForm }
-enum FrontLayerStatus { showForm, hideForm}
+enum FrontLayerStatus { showForm, hideForm }
 
 double _kFlingVelocity = 2.0;
 MenuStatus _menuStatus = MenuStatus.toggleForm;
@@ -159,17 +159,6 @@ class _BackdropState extends State<Backdrop>
     );
     _targetOpacity = 0.0;
   }
-
-//  @override
-//  void didUpdateWidget(Backdrop old) {
-//    super.didUpdateWidget(old);
-//    // TODO(tianlun): Update to Crane categories
-//    if (widget.currentCategory != old.currentCategory) {
-//      _flingFrontLayer();
-//    } else if (_frontLayerStatus == FrontLayerStatus.hideForm) {
-//      _controller.fling(velocity: _kFlingVelocity);
-//    }
-//  }
 
   @override
   void dispose() {
@@ -317,7 +306,6 @@ class _BackdropState extends State<Backdrop>
                   _targetOpacity = 1.0;
                   _menuStatus = MenuStatus.showMenu;
                 });
-                _flingFrontLayer();
               },
             ),
           ),
@@ -340,9 +328,6 @@ class _BackdropState extends State<Backdrop>
                       if (_tabController.index == 0) {
                         setState(() {
                           _menuStatus = MenuStatus.toggleForm;
-                        });
-                        _flingFrontLayer();
-                        setState(() {
                           _frontLayerStatus == FrontLayerStatus.showForm ?
                           _frontLayerStatus = FrontLayerStatus.hideForm :
                           _frontLayerStatus = FrontLayerStatus.showForm;
@@ -355,7 +340,6 @@ class _BackdropState extends State<Backdrop>
                             _menuStatus = MenuStatus.toggleForm;
                             _frontLayerStatus = FrontLayerStatus.showForm;
                           });
-                          _flingFrontLayer();
                         }
                       }
                     },
@@ -371,12 +355,10 @@ class _BackdropState extends State<Backdrop>
                       borderRadius: BorderRadius.all(Radius.circular(12.0)),
                     ),
                     onPressed: () {
-                      if (_tabController.index == 1) {
+                      var _prevIndex = _tabController.index;
+                      if (_prevIndex == 1) {
                         setState(() {
                           _menuStatus = MenuStatus.toggleForm;
-                        });
-                        _flingFrontLayer();
-                        setState(() {
                           _frontLayerStatus == FrontLayerStatus.showForm ?
                           _frontLayerStatus = FrontLayerStatus.hideForm :
                           _frontLayerStatus = FrontLayerStatus.showForm;
@@ -384,12 +366,12 @@ class _BackdropState extends State<Backdrop>
                       }
                       else {
                         _tabController.animateTo(1);
+                        _tabController.index = 1;
                         if (_frontLayerStatus == FrontLayerStatus.hideForm) {
                           setState(() {
                             _menuStatus = MenuStatus.toggleForm;
                             _frontLayerStatus = FrontLayerStatus.showForm;
                           });
-                          _flingFrontLayer();
                         }
                       }
                     },
@@ -408,12 +390,10 @@ class _BackdropState extends State<Backdrop>
                       if (_tabController.index == 2) {
                         setState(() {
                           _menuStatus = MenuStatus.toggleForm;
-                        });
-                        _flingFrontLayer();
-                        setState(() {
                           _frontLayerStatus == FrontLayerStatus.showForm ?
                           _frontLayerStatus = FrontLayerStatus.hideForm :
                           _frontLayerStatus = FrontLayerStatus.showForm;
+//                          _flingFrontLayer();
                         });
                       }
                       else {
@@ -422,8 +402,8 @@ class _BackdropState extends State<Backdrop>
                           setState(() {
                             _menuStatus = MenuStatus.toggleForm;
                             _frontLayerStatus = FrontLayerStatus.showForm;
+//                            _flingFrontLayer();
                           });
-                          _flingFrontLayer();
                         }
                       }
                     },
