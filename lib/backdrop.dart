@@ -147,6 +147,7 @@ class _BackdropState extends State<Backdrop>
 
   final GlobalKey _backdropKey = GlobalKey(debugLabel: 'Backdrop');
   AnimationController _controller;
+  TabController _tabController;
   var _targetOpacity;
 
   @override
@@ -158,6 +159,7 @@ class _BackdropState extends State<Backdrop>
       vsync: this,
     );
     _targetOpacity = 0.0;
+    _tabController = TabController(length: 3, vsync: this);
   }
 
   @override
@@ -288,7 +290,6 @@ class _BackdropState extends State<Backdrop>
   }
 
   Widget _buildMainApp(BuildContext context) {
-    final _tabController = TabController(length: 3, vsync: this);
 
     var appBar = AppBar(
       brightness: Brightness.light,
