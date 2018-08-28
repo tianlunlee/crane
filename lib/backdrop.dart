@@ -221,9 +221,7 @@ class _BackdropState extends State<Backdrop>
   }
 
   Widget _buildFlyStack(BuildContext context, BoxConstraints constraints) {
-    double flyLayerTitleHeight = 320+.0;
-    final Size flyLayerSize = constraints.biggest;
-    final double flyLayerTop = flyLayerSize.height - flyLayerTitleHeight;
+    final double flyLayerTop = 271+.0;
 
     Animation<RelativeRect> flyLayerAnimation =
         _buildLayerAnimation(context, flyLayerTop);
@@ -244,9 +242,7 @@ class _BackdropState extends State<Backdrop>
   }
 
   Widget _buildSleepStack(BuildContext context, BoxConstraints constraints) {
-    double sleepLayerTitleHeight = 385+.0;
-    final Size sleepLayerSize = constraints.biggest;
-    final double sleepLayerTop = sleepLayerSize.height - sleepLayerTitleHeight;
+    final double sleepLayerTop = 205+.0;
 
     Animation<RelativeRect> sleepLayerAnimation =
         _buildLayerAnimation(context, sleepLayerTop);
@@ -267,9 +263,7 @@ class _BackdropState extends State<Backdrop>
   }
 
   Widget _buildEatStack(BuildContext context, BoxConstraints constraints) {
-    double eatLayerTitleHeight = 320+.0; // MediaQuery().of(context)
-    final Size eatLayerSize = constraints.biggest;
-    final double eatLayerTop = eatLayerSize.height - eatLayerTitleHeight;
+    final double eatLayerTop = 271+.0;
 
     Animation<RelativeRect> eatLayerAnimation =
     _buildLayerAnimation(context, eatLayerTop);
@@ -309,14 +303,15 @@ class _BackdropState extends State<Backdrop>
     }
 
     var appBar = AppBar(
-      brightness: Brightness.light,
+      brightness: Brightness.dark,
       elevation: 0.0,
       titleSpacing: 0.0,
       // TODO(tianlun): Replace IconButton icon with Crane logo.
       flexibleSpace: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           Container(
-            padding: EdgeInsets.fromLTRB(0.0, 16.0, 12.0, 0.0),
+            padding: EdgeInsets.fromLTRB(12.00, 24.0, 0.0, 0.0),
             child: IconButton(
               icon: Icon(Icons.menu),
               onPressed: () {
@@ -328,7 +323,7 @@ class _BackdropState extends State<Backdrop>
             ),
           ),
           Container(
-            padding: EdgeInsets.only(top: 36.0, bottom: 10.0),
+            padding: EdgeInsets.only(top: 24.0),
             height: 150.0,
             width: 300.0,
             child: Row(

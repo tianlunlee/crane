@@ -41,7 +41,7 @@ class _FlyFormState extends State<FlyForm> {
               child: TextField(
                 controller: _travelerController,
                 decoration: InputDecoration(
-                  border:NoPaintRoundedBorder(),
+                  border: NoPaintRoundedBorder(),
                   fillColor: kCranePurple700,
                   filled: true,
                   labelText: 'Travelers',
@@ -67,7 +67,7 @@ class _FlyFormState extends State<FlyForm> {
               child: TextField(
                 controller: _destinationController,
                 decoration: InputDecoration(
-                  border:NoPaintRoundedBorder(),
+                  border: NoPaintRoundedBorder(),
                   fillColor: kCranePurple700,
                   filled: true,
                   labelText: 'Destination',
@@ -80,7 +80,7 @@ class _FlyFormState extends State<FlyForm> {
               child: TextField(
                 controller: _dateController,
                 decoration: InputDecoration(
-                  border:NoPaintRoundedBorder(),
+                  border: NoPaintRoundedBorder(),
                   fillColor: kCranePurple700,
                   filled: true,
                   labelText: 'Dates',
