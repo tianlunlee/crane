@@ -290,7 +290,6 @@ class _BackdropState extends State<Backdrop>
   }
 
   Widget _buildMainApp(BuildContext context) {
-
     void handleTabs (var tabIndex) {
       if (_tabController.index == tabIndex) {
         setState(() {
@@ -307,7 +306,7 @@ class _BackdropState extends State<Backdrop>
           });
         }
       }
-    };
+    }
 
     var appBar = AppBar(
       brightness: Brightness.light,

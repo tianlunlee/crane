@@ -15,6 +15,7 @@
 import 'package:flutter/material.dart';
 
 import 'colors.dart';
+import 'no_paint_rounded_border.dart';
 
 class FlyForm extends StatefulWidget {
   @override
@@ -40,6 +41,7 @@ class _FlyFormState extends State<FlyForm> {
               child: TextField(
                 controller: _travelerController,
                 decoration: InputDecoration(
+                  border:NoPaintRoundedBorder(),
                   fillColor: kCranePurple700,
                   filled: true,
                   labelText: 'Travelers',
@@ -52,7 +54,7 @@ class _FlyFormState extends State<FlyForm> {
               child: TextField(
                 controller: _countryDestinationController,
                 decoration: InputDecoration(
-                  border: InputBorder.none, 
+                  border: NoPaintRoundedBorder(),
                   fillColor: kCranePurple700,
                   filled: true,
                   labelText: 'Country',
@@ -65,6 +67,7 @@ class _FlyFormState extends State<FlyForm> {
               child: TextField(
                 controller: _destinationController,
                 decoration: InputDecoration(
+                  border:NoPaintRoundedBorder(),
                   fillColor: kCranePurple700,
                   filled: true,
                   labelText: 'Destination',
@@ -77,6 +80,7 @@ class _FlyFormState extends State<FlyForm> {
               child: TextField(
                 controller: _dateController,
                 decoration: InputDecoration(
+                  border:NoPaintRoundedBorder(),
                   fillColor: kCranePurple700,
                   filled: true,
                   labelText: 'Dates',
