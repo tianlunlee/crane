@@ -20,6 +20,7 @@ import 'model/flight.dart';
 import 'model/data.dart';
 import 'app.dart';
 import 'colors.dart';
+import 'border_tab_indicator.dart';
 //import 'menu_page.dart';
 
 enum MenuStatus { showMenu, hideMenu, toggleForm }
@@ -179,6 +180,8 @@ class _BackdropState extends State<Backdrop>
   }
 
   Animation<RelativeRect> _buildLayerAnimation (BuildContext context, double layerTop) {
+    Size size = MediaQuery.of(context).size;
+    double lowHeight = size.height - 144.0;
     Animation<RelativeRect> layerAnimation;
 
     if (_menuStatus == MenuStatus.toggleForm && _showForm) {
@@ -195,26 +198,26 @@ class _BackdropState extends State<Backdrop>
     }
     else if (_menuStatus == MenuStatus.hideMenu && _showForm) {
       layerAnimation = RelativeRectTween(
-        begin: RelativeRect.fromLTRB(0.0, 550.0, 0.0, 0.0),
+        begin: RelativeRect.fromLTRB(0.0, lowHeight, 0.0, 0.0),
         end: RelativeRect.fromLTRB(0.0, layerTop, 0.0, 0.0),
       ).animate(_controller.view);
     }
     else if (_menuStatus == MenuStatus.hideMenu && !_showForm) {
       layerAnimation = RelativeRectTween(
-        begin: RelativeRect.fromLTRB(0.0, 550.0, 0.0, 0.0),
+        begin: RelativeRect.fromLTRB(0.0, lowHeight, 0.0, 0.0),
         end: RelativeRect.fromLTRB(0.0, 0.0, 0.0, 0.0),
       ).animate(_controller.view);
     }
     else if (_menuStatus == MenuStatus.showMenu && _showForm) {
       layerAnimation = RelativeRectTween(
         begin: RelativeRect.fromLTRB(0.0, layerTop, 0.0, 0.0),
-        end: RelativeRect.fromLTRB(0.0, 550.0, 0.0, 0.0),
+        end: RelativeRect.fromLTRB(0.0, lowHeight, 0.0, 0.0),
       ).animate(_controller.view);
     }
     else { // _menuStatus == MenuStatus.showMenu && !_showForm
       layerAnimation = RelativeRectTween(
         begin: RelativeRect.fromLTRB(0.0, 0.0, 0.0, 0.0),
-        end: RelativeRect.fromLTRB(0.0, 550.0, 0.0, 0.0),
+        end: RelativeRect.fromLTRB(0.0, lowHeight, 0.0, 0.0),
       ).animate(_controller.view);
     }
     return layerAnimation;
@@ -284,7 +287,7 @@ class _BackdropState extends State<Backdrop>
   }
 
   Widget _buildMainApp(BuildContext context) {
-    void handleTabs (var tabIndex) {
+    void _handleTabs (var tabIndex) {
       if (_tabController.index == tabIndex) {
         setState(() {
           _menuStatus = MenuStatus.toggleForm;
@@ -293,13 +296,14 @@ class _BackdropState extends State<Backdrop>
       }
       else {
         _tabController.animateTo(tabIndex);
-        if (!_showForm) {
-          setState(() {
-            _menuStatus = MenuStatus.toggleForm;
-            _showForm = !_showForm;
-          });
-        }
       }
+    }
+
+    bool _isSelected(var tabIndex) {
+      if (_tabController.index == tabIndex) {
+        return true;
+      }
+      return false;
     }
 
     var appBar = AppBar(
@@ -307,67 +311,79 @@ class _BackdropState extends State<Backdrop>
       elevation: 0.0,
       titleSpacing: 0.0,
       // TODO(tianlun): Replace IconButton icon with Crane logo.
-      flexibleSpace: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          Container(
-            padding: EdgeInsets.fromLTRB(12.00, 24.0, 0.0, 0.0),
-            child: IconButton(
-              icon: Icon(Icons.menu),
-              onPressed: () {
-                setState(() {
-                  _targetOpacity = 1.0;
-                  _menuStatus = MenuStatus.showMenu;
-                });
-              },
+      flexibleSpace: SafeArea(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            _SplashOverride(
+              color: kCraneAlpha,
+              child: Container(
+                padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+                child: IconButton(
+                  icon: Icon(Icons.menu),
+                  onPressed: () {
+                    setState(() {
+                      _targetOpacity = 1.0;
+                      _menuStatus = MenuStatus.showMenu;
+                    });
+                  },
+                ),
+              ),
             ),
-          ),
-          Container(
-            padding: EdgeInsets.only(top: 24.0),
-            height: 150.0,
-            width: 300.0,
-            child: Row(
-              children: <Widget>[
-                Container(
-                  height: 64.0,
-                  width: 96.0,
-                  child: FlatButton(
-                    child: Text('FLY'),
-                    textColor: kCranePrimaryWhite,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(12.0)),
+            Container(
+              height: 100.0,
+              width: 300.0,
+              child: _SplashOverride(
+                color: kCraneAlpha,
+                child: TabBar(
+                  unselectedLabelStyle: Theme.of(context).textTheme.body2.copyWith(fontWeight: FontWeight.w100),
+                  unselectedLabelColor: null,
+                  indicator: BorderTabIndicator(),
+                  controller: _tabController,
+                  tabs: <Widget>[
+                    Container(
+                      height: 25.0,
+                      width: 75.0,
+                      child: FlatButton(
+                        child: Text('FLY'),
+                        textColor: kCranePrimaryWhite,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                        ),
+                        onPressed: () => _handleTabs(0),
+                      ),
                     ),
-                    onPressed: () => handleTabs(0),
-                  ),
-                ),
-                Container(
-                  height: 64.0,
-                  width: 96.0,
-                  child: FlatButton(
-                    child: Text('SLEEP'),
-                    textColor: kCranePrimaryWhite,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                    Container(
+                      height: 25.0,
+                      width: 75.0,
+                      child: FlatButton(
+                        child: Text('SLEEP'),
+                        textColor: kCranePrimaryWhite,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                        ),
+                        onPressed: () => _handleTabs(1),
+                      ),
                     ),
-                    onPressed: () => handleTabs(1),
-                  ),
-                ),
-                Container(
-                  height: 64.0,
-                  width: 96.0,
-                  child: FlatButton(
-                    child: Text('EAT'),
-                    textColor: kCranePrimaryWhite,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                    Container(
+                      height: 25.0,
+                      width: 75.0,
+                      child: FlatButton(
+                        child: Text('EAT'),
+                        textColor: kCranePrimaryWhite,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                        ),
+                        onPressed: () => _handleTabs(2),
+                      ),
                     ),
-                    onPressed: () => handleTabs(2),
-                  ),
+                  ],
                 ),
-              ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
     return Material(
@@ -439,6 +455,22 @@ class _BackdropState extends State<Backdrop>
   Widget build(BuildContext context) {
     return Material(
       child: _buildMainApp(context),
+    );
+  }
+}
+
+class _SplashOverride extends StatelessWidget {
+  const _SplashOverride({Key key, this.color, this.child})
+      : super(key: key);
+
+  final Color color;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Theme(
+      child: child,
+      data: Theme.of(context).copyWith(splashColor: color, highlightColor: color),
     );
   }
 }
