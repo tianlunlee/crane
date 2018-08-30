@@ -11,13 +11,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-class NoPaintRoundedBorder extends InputBorder {
-  const NoPaintRoundedBorder({
+class PaintlessRoundedBorder extends InputBorder {
+  const PaintlessRoundedBorder({
     borderSide: BorderSide.none,
     this.borderRadius = const BorderRadius.all(Radius.circular(4.0)),
   }) : assert(borderRadius != null),
@@ -26,8 +27,8 @@ class NoPaintRoundedBorder extends InputBorder {
   final BorderRadius borderRadius;
 
   @override
-  NoPaintRoundedBorder copyWith({ BorderSide borderSide, BorderRadius borderRadius }) {
-    return new NoPaintRoundedBorder(
+  PaintlessRoundedBorder copyWith({ BorderSide borderSide, BorderRadius borderRadius }) {
+    return new PaintlessRoundedBorder(
       borderSide: borderSide ?? this.borderSide,
       borderRadius: borderRadius ?? this.borderRadius,
     );
@@ -40,8 +41,8 @@ class NoPaintRoundedBorder extends InputBorder {
   EdgeInsetsGeometry get dimensions => EdgeInsets.zero;
 
   @override
-  NoPaintRoundedBorder scale(double t) {
-    return new NoPaintRoundedBorder(borderSide: borderSide.scale(t));
+  PaintlessRoundedBorder scale(double t) {
+    return new PaintlessRoundedBorder(borderSide: borderSide.scale(t));
   }
 
     @override
@@ -62,5 +63,20 @@ class NoPaintRoundedBorder extends InputBorder {
       double gapPercentage = 0.0,
       TextDirection textDirection,
     }) {
+      // Do not paint
     }
+
+  @override
+  bool operator ==(dynamic other) {
+    if (identical(this, other))
+      return true;
+    if (runtimeType != other.runtimeType)
+      return false;
+    final InputBorder typedOther = other;
+    return typedOther.borderSide == borderSide;
+  }
+
+  @override
+  int get hashCode => borderSide.hashCode;
+
   }

@@ -338,18 +338,24 @@ class _BackdropState extends State<Backdrop>
                 color: kCraneAlpha,
                 child: TabBar(
                   unselectedLabelStyle: Theme.of(context).textTheme.body2.copyWith(fontWeight: FontWeight.w100),
-                  unselectedLabelColor: null,
+                  unselectedLabelColor: Colors.black,
                   indicator: BorderTabIndicator(),
                   controller: _tabController,
                   tabs: <Widget>[
-                    Container(
-                      height: 25.0,
-                      width: 75.0,
-                      child: FlatButton(
-                        child: Text('FLY'),
+                  Container(
+                  height: 25.0,
+                  width: 75.0,
+                    child: FlatButton(
+                      child: Text(
+                        'FLY',
+                        style: Theme.of(context).textTheme.body2.copyWith(
+                          color: kCranePrimaryWhite,
+                          fontWeight: FontWeight.w200,
+                        ),
+                      ),
                         textColor: kCranePrimaryWhite,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                         borderRadius: BorderRadius.all(Radius.circular(12.0)),
                         ),
                         onPressed: () => _handleTabs(0),
                       ),
@@ -358,7 +364,13 @@ class _BackdropState extends State<Backdrop>
                       height: 25.0,
                       width: 75.0,
                       child: FlatButton(
-                        child: Text('SLEEP'),
+                        child: Text(
+                          'SLEEP',
+                          style: Theme.of(context).textTheme.body2.copyWith(
+                            color: kCranePrimaryWhite,
+                            fontWeight: FontWeight.w200,
+                          ),
+                        ),
                         textColor: kCranePrimaryWhite,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(12.0)),
@@ -370,7 +382,13 @@ class _BackdropState extends State<Backdrop>
                       height: 25.0,
                       width: 75.0,
                       child: FlatButton(
-                        child: Text('EAT'),
+                        child: Text(
+                          'EAT',
+                          style: Theme.of(context).textTheme.body2.copyWith(
+                            color: kCranePrimaryWhite,
+                            fontWeight: FontWeight.w200,
+                          ),
+                        ),
                         textColor: kCranePrimaryWhite,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(12.0)),
