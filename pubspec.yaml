@@ -37,5 +37,4 @@ flutter:
     - family: Raleway
       fonts:
         - asset: fonts/Raleway-Regular.ttf
-        - asset: fonts/Raleway-Medium.ttf
         - asset: fonts/Raleway-SemiBold.ttf
