@@ -21,7 +21,6 @@ import 'menu_page.dart';
 import 'fly_form.dart';
 import 'sleep_form.dart';
 import 'eat_form.dart';
-import 'backdrop.dart';
 
 
 class CraneApp extends StatefulWidget {
@@ -122,7 +121,7 @@ TextTheme _buildCraneTextTheme(TextTheme base) {
       fontSize: 12.0,
     ),
     body2: base.body2.copyWith(
-      fontWeight: FontWeight.w500,
+      fontWeight: FontWeight.w600,
       fontSize: 14.0,
     ),
 
