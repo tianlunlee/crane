@@ -240,20 +240,21 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
 
     void _handleTabs(var tabIndex) {
       if (_tabController.index == tabIndex) {
-          if (_targetFrontLayerStatus == FrontLayerStatus.closed) {
-            _targetFrontLayerStatus = FrontLayerStatus.partial;
-            _initFrontLayerStatus = FrontLayerStatus.closed;
-          } else {
-            _targetFrontLayerStatus = FrontLayerStatus.closed;
-            _initFrontLayerStatus = FrontLayerStatus.partial;
-          }
+//          if (_targetFrontLayerStatus == FrontLayerStatus.closed) {
+//            _targetFrontLayerStatus = FrontLayerStatus.partial;
+//            _initFrontLayerStatus = FrontLayerStatus.closed;
+//          } else {
+//            _targetFrontLayerStatus = FrontLayerStatus.closed;
+//            _initFrontLayerStatus = FrontLayerStatus.partial;
+//          }
+        setState(() {});
         _flingFrontLayer();
       }
       else {
         print(_controller.status);
-        if (_controller.status == AnimationStatus.completed) {
-          _controller.reverse();
-        }
+//        if (_controller.status == AnimationStatus.completed) {
+//          _controller.reverse();
+//        }
         _tabController.animateTo(tabIndex);
       }
     }
@@ -283,9 +284,9 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
                   icon: Icon(Icons.menu),
                   onPressed: () {
 //                    setState(() {
-//                      _menuStatus = MenuStatus.open;
-//                      _initFrontLayerStatus = _targetFrontLayerStatus;
-//                      _targetFrontLayerStatus = FrontLayerStatus.open;
+//                    _menuStatus = MenuStatus.open;
+//                    _initFrontLayerStatus = _targetFrontLayerStatus;
+//                    _targetFrontLayerStatus = FrontLayerStatus.open;
 //                    });
 //                    _flingFrontLayer();
                   },
