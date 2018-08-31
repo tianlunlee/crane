@@ -34,15 +34,18 @@ class _FrontLayer extends StatelessWidget {
     Key key,
     this.onTap,
     this.child,
+    this.title,
   }) : super(key: key);
 
   final VoidCallback onTap;
   final Widget child;
+  final String title;
 
   @override
   Widget build(BuildContext context) {
     return Material(
       elevation: 16.0,
+      color: kCranePrimaryWhite,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(16.0),
@@ -52,25 +55,32 @@ class _FrontLayer extends StatelessWidget {
       child: ListView(
         shrinkWrap: true,
         padding: const EdgeInsets.all(20.0),
-        children: _buildFlightCards(context),
+        children: <Widget>[
+          Text(title),
+          SizedBox(height: 8.0,),
+          Column(
+            children: _buildFlightCards(context),
+          ),
+        ],
       )
     );
   }
 
-  List<Card> _buildFlightCards(BuildContext context) {
+  List<Widget> _buildFlightCards(BuildContext context) {
     List<Flight> flights = getFlights(Category.findTrips);
     return flights.map((flight) {
-      return Card(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            ListTile(
-              leading: Icon(Icons.album),
-              title: Text(flight.destination),
-              subtitle: Text(flight.layover ? 'Layover' : 'Nonstop'),
-            ),
-          ],
-        )
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          ListTile(
+            leading: Icon(Icons.album),
+            title: Text(flight.destination),
+            subtitle: Text(flight.layover ? 'Layover' : 'Nonstop'),
+          ),
+          SizedBox(
+            child: Divider(indent: 4.0,),
+          ),
+        ],
       );
     }).toList();
   }
@@ -189,6 +199,7 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
           child: _FrontLayer(
             onTap: _flingFrontLayer,
             child: widget.frontLayer,
+            title: 'Explore Flights by Destination',
           ),
         ),
       ],
@@ -209,6 +220,7 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
           child: _FrontLayer(
             onTap: _flingFrontLayer,
             child: widget.frontLayer,
+            title: 'Explore Properties by Destination',
           ),
         ),
       ],
@@ -229,6 +241,7 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
           child: _FrontLayer(
             onTap: _flingFrontLayer,
             child: widget.frontLayer,
+            title: 'Explore Restaurants by Destination',
           ),
         ),
       ],
@@ -251,7 +264,6 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
         _flingFrontLayer();
       }
       else {
-        print(_controller.status);
 //        if (_controller.status == AnimationStatus.completed) {
 //          _controller.reverse();
 //        }
