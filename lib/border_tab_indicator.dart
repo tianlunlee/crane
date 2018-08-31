@@ -77,10 +77,10 @@ class _BorderPainter extends BoxPainter {
     assert(textDirection != null);
     final Rect indicator = insets.resolve(textDirection).deflateRect(rect);
     return new Rect.fromLTWH(
-      indicator.left + 22.0,
-      indicator.top + 13.0,
-      indicator.width / 2.0 + 8.0,
-      indicator.height / 2.0,
+      indicator.left + indicator.width / 2.0 - 36.0,
+      indicator.top + (indicator.height - 32.0) / 2.0,
+      72.0,
+      32.0, // TODO(tianlun): Add as constants
     );
   }
 
