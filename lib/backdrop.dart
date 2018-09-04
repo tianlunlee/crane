@@ -20,6 +20,7 @@ import 'model/flight.dart';
 import 'model/data.dart';
 import 'colors.dart';
 import 'border_tab_indicator.dart';
+import 'no_paint_rounded_border.dart';
 //import 'menu_page.dart';
 
 enum MenuStatus { open, closed }
@@ -186,14 +187,14 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
   }
 
   Widget _buildFlyStack(BuildContext context, BoxConstraints constraints) {
-    final double flyLayerTop = 271 + .0;
+    final double flyLayerTop = 270 + .0;
 
     Animation<RelativeRect> flyLayerAnimation =
     _buildLayerAnimation(context, flyLayerTop);
 
     return Stack(
       children: <Widget>[
-        widget.backLayer[0],
+//        widget.backLayer[0],
         PositionedTransition(
           rect: flyLayerAnimation,
           child: _FrontLayer(
@@ -207,14 +208,14 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
   }
 
   Widget _buildSleepStack(BuildContext context, BoxConstraints constraints) {
-    final double sleepLayerTop = 205 + .0;
+    final double sleepLayerTop = 202 + .0;
 
     Animation<RelativeRect> sleepLayerAnimation =
     _buildLayerAnimation(context, sleepLayerTop);
 
     return Stack(
       children: <Widget>[
-        widget.backLayer[1],
+//        widget.backLayer[1],
         PositionedTransition(
           rect: sleepLayerAnimation,
           child: _FrontLayer(
@@ -228,14 +229,14 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
   }
 
   Widget _buildEatStack(BuildContext context, BoxConstraints constraints) {
-    final double eatLayerTop = 271 + .0;
+    final double eatLayerTop = 270 + .0;
 
     Animation<RelativeRect> eatLayerAnimation =
     _buildLayerAnimation(context, eatLayerTop);
 
     return Stack(
       children: <Widget>[
-        widget.backLayer[2],
+//        widget.backLayer[2],
         PositionedTransition(
           rect: eatLayerAnimation,
           child: _FrontLayer(
@@ -270,13 +271,13 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
         _tabController.animateTo(tabIndex);
       }
     }
-
-    bool _isSelected(var tabIndex) {
-      if (_tabController.index == tabIndex) {
-        return true;
-      }
-      return false;
-    }
+//
+//    bool _isSelected(var tabIndex) {
+//      if (_tabController.index == tabIndex) {
+//        return true;
+//      }
+//      return false;
+//    }
 
     var appBar = AppBar(
       brightness: Brightness.dark,
@@ -382,17 +383,22 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
         children: <Widget>[
           Scaffold(
             appBar: appBar,
-            body: TabBarView(
-              controller: _tabController,
+            body: Stack(
               children: <Widget>[
-                LayoutBuilder(
-                  builder: _buildFlyStack,
-                ),
-                LayoutBuilder(
-                  builder: _buildSleepStack,
-                ),
-                LayoutBuilder(
-                  builder: _buildEatStack,
+                widget.backLayer[0],
+                TabBarView(
+                  controller: _tabController,
+                  children: <Widget>[
+                    LayoutBuilder(
+                      builder: _buildFlyStack,
+                    ),
+                    LayoutBuilder(
+                      builder: _buildSleepStack,
+                    ),
+                    LayoutBuilder(
+                      builder: _buildEatStack,
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -471,6 +477,23 @@ class _SplashOverride extends StatelessWidget {
     return Theme(
       child: child,
       data: Theme.of(context).copyWith(splashColor: color, highlightColor: color),
+    );
+  }
+}
+
+class _PrimaryColorOverride extends StatelessWidget {
+  const _PrimaryColorOverride({Key key, this.color, this.child})
+      : super(key: key);
+
+  final Color color;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Theme(
+      child: child,
+      // TODO(tianlun): Change the color of the text theme instead
+      data: Theme.of(context).copyWith(primaryColor: color),
     );
   }
 }
