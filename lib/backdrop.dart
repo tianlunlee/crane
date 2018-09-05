@@ -30,18 +30,16 @@ double _kFlingVelocity = 2.0;
 MenuStatus _menuStatus = MenuStatus.closed;
 
 class _FrontLayer extends StatelessWidget {
-  _FrontLayer({
+  const _FrontLayer({
     Key key,
     this.onTap,
     this.child,
     this.title,
-  })  : cards = _buildFlightCards(),
-        super(key: key);
+  }) : super(key: key);
 
   final VoidCallback onTap;
   final Widget child;
   final String title;
-  final List<Widget> cards;
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +62,7 @@ class _FrontLayer extends StatelessWidget {
               height: 8.0,
             ),
             Column(
-              children: cards,
+              children: _buildFlightCards(),
             ),
           ],
         ));
