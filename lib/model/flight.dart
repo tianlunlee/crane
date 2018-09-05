@@ -37,8 +37,7 @@ class Flight {
   final String destination;
   final bool layover;
 // TODO(tianlun): change to crane images
-  String get assetName => '$id-0.jpg';
-  String get assetPackage => 'shrine_images';
+  String get assetName => 'assets/$id.png';
 
   @override
   String toString() => '$destination (id=$id)';
