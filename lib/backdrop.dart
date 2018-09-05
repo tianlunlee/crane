@@ -119,7 +119,9 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
   TabController _tabController;
   FrontLayerStatus _initFrontLayerStatus;
   FrontLayerStatus _targetFrontLayerStatus;
-
+  AnimationController _xController;
+  AnimationController _yController;
+  var prevTabIndex;
 
   @override
   void initState() {
@@ -129,7 +131,19 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
       value: 0.0,
       vsync: this,
     );
+    _xController = AnimationController(
+        duration: const Duration(milliseconds: 500),
+        value: 0.0,
+//        upperBound: 2.0,
+        vsync: this,
+    );
+    _yController = AnimationController(
+        duration: const Duration(milliseconds: 500),
+        value: 0.0,
+        vsync: this,
+    );
     _tabController = TabController(length: 3, vsync: this);
+    prevTabIndex = 0;
     _initFrontLayerStatus = FrontLayerStatus.partial;
     _targetFrontLayerStatus = FrontLayerStatus.closed;
   }
@@ -146,9 +160,9 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
         status == AnimationStatus.forward;
   }
 
-  void _flingFrontLayer() {
+  void _flingFrontLayerVertical() {
     _controller.fling(
-        velocity: _frontLayerVisible ? -_kFlingVelocity : _kFlingVelocity
+      velocity: _frontLayerVisible ? -_kFlingVelocity : _kFlingVelocity
     );
   }
 
@@ -198,7 +212,7 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
         PositionedTransition(
           rect: flyLayerAnimation,
           child: _FrontLayer(
-            onTap: _flingFrontLayer,
+            onTap: _flingFrontLayerVertical,
             child: widget.frontLayer,
             title: 'Explore Flights by Destination',
           ),
@@ -219,7 +233,7 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
         PositionedTransition(
           rect: sleepLayerAnimation,
           child: _FrontLayer(
-            onTap: _flingFrontLayer,
+            onTap: _flingFrontLayerVertical,
             child: widget.frontLayer,
             title: 'Explore Properties by Destination',
           ),
@@ -240,7 +254,7 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
         PositionedTransition(
           rect: eatLayerAnimation,
           child: _FrontLayer(
-            onTap: _flingFrontLayer,
+            onTap: _flingFrontLayerVertical,
             child: widget.frontLayer,
             title: 'Explore Restaurants by Destination',
           ),
@@ -262,13 +276,36 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
 //            _initFrontLayerStatus = FrontLayerStatus.partial;
 //          }
         setState(() {});
-        _flingFrontLayer();
+        _flingFrontLayerVertical();
       }
       else {
 //        if (_controller.status == AnimationStatus.completed) {
 //          _controller.reverse();
 //        }
+//        _xController.value = tabIndex;
         _tabController.animateTo(tabIndex);
+        if (tabIndex + prevTabIndex < 2) {
+          _xController.fling(
+            velocity: (tabIndex - prevTabIndex) * _kFlingVelocity,
+          );
+//          _xController.value = 0.0;
+        }
+        else if (tabIndex + prevTabIndex == 2) {
+          _yController.fling(
+            velocity: (tabIndex - prevTabIndex) * _kFlingVelocity,
+          );
+//          _xController.value = 1.0;
+        }
+        else {
+//          _xController.value = 2.0;
+          _xController.fling(
+            velocity: (tabIndex - prevTabIndex) * _kFlingVelocity,
+          );
+          _yController.fling(
+            velocity: (tabIndex - prevTabIndex) * _kFlingVelocity,
+          );
+        }
+        prevTabIndex = tabIndex;
       }
     }
 //
@@ -386,19 +423,65 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
             body: Stack(
               children: <Widget>[
                 widget.backLayer[0],
-                TabBarView(
-                  controller: _tabController,
-                  children: <Widget>[
-                    LayoutBuilder(
+                  SlideTransition(
+                    position: Tween<Offset>(
+                      begin: Offset(0.0, 0.0),
+                      end: Offset(-2.0, 0.0),
+                    ).animate(
+                      CurvedAnimation(
+                        parent: _xController,
+                        curve: Interval(0.0, 1.0),
+                        reverseCurve: Interval(0.0, 1.0).flipped,
+                      ),
+                    ),
+                    child: LayoutBuilder(
                       builder: _buildFlyStack,
                     ),
-                    LayoutBuilder(
+                  ),
+                  SlideTransition(
+                    position: Tween<Offset>(
+                      begin: Offset(1.0, 0.0),
+                      end: Offset(0.0, 0.0),
+                    ).animate(
+                      CurvedAnimation(
+                        parent: _xController,
+                        curve: Interval(0.0, 1.0),
+                        reverseCurve: Interval(0.0, 1.0).flipped,
+                      ),
+                    ),
+                    child: LayoutBuilder(
                       builder: _buildSleepStack,
                     ),
-                    LayoutBuilder(
-                      builder: _buildEatStack,
+                  ),
+//                 SlideTransition(
+//                  position: Tween<Offset>(
+//                    begin: Offset(0.0, 0.0),
+//                    end: Offset(-1.0, 0.0),
+//                  ).animate(
+//                    CurvedAnimation(
+//                      parent: _yController,
+//                      curve: Interval(0.0, 1.0),
+//                      reverseCurve: Interval(0.0, 1.0).flipped,
+//                    ),
+//                  ),
+//                  child: LayoutBuilder(
+//                    builder: _buildSleepStack,
+//                  ),
+//                ),
+                SlideTransition(
+                  position: Tween<Offset>(
+                    begin: Offset(2.0, 0.0),
+                    end: Offset(0.0, 0.0),
+                  ).animate(
+                    CurvedAnimation(
+                      parent: _yController,
+                      curve: Interval(0.0, 1.0),
+                      reverseCurve: Interval(0.0, 1.0).flipped,
                     ),
-                  ],
+                  ),
+                  child: LayoutBuilder(
+                    builder: _buildEatStack,
+                  ),
                 ),
               ],
             ),
