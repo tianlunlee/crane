@@ -114,7 +114,9 @@ TextTheme _buildCraneTextTheme(TextTheme base) {
       fontWeight: FontWeight.w500,
     ),
     title: base.title.copyWith(
-        fontSize: 16.0
+      fontWeight: FontWeight.w600,
+      fontSize: 16.0,
+      color: Color(0xFF1E252D),
     ),
     caption: base.caption.copyWith(
       fontWeight: FontWeight.w400,
@@ -124,7 +126,16 @@ TextTheme _buildCraneTextTheme(TextTheme base) {
       fontWeight: FontWeight.w600,
       fontSize: 14.0,
     ),
-
+    display1: base.display1.copyWith(
+      fontWeight: FontWeight.w600,
+      fontSize: 12.0,
+      color: Colors.black.withOpacity(.6),
+    ),
+    subhead: base.subhead.copyWith(
+      fontWeight: FontWeight.w600,
+      fontSize: 12.0,
+      color: Colors.black54,
+    ),
   ).apply(
     fontFamily: 'Raleway',
   );

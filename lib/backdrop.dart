@@ -26,7 +26,6 @@ import 'no_paint_rounded_border.dart';
 enum MenuStatus { open, closed }
 enum FrontLayerStatus { open, partial, closed }
 
-
 double _kFlingVelocity = 2.0;
 MenuStatus _menuStatus = MenuStatus.closed;
 
@@ -45,44 +44,34 @@ class _FrontLayer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      elevation: 16.0,
-      color: kCranePrimaryWhite,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(16.0),
-          topRight: Radius.circular(16.0)
+        elevation: 16.0,
+        color: kCranePrimaryWhite,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(16.0), topRight: Radius.circular(16.0)),
         ),
-      ),
-      child: ListView(
-        shrinkWrap: true,
-        padding: const EdgeInsets.all(20.0),
-        children: <Widget>[
-          Text(title),
-          SizedBox(height: 8.0,),
-          Column(
-            children: _buildFlightCards(context),
-          ),
-        ],
-      )
-    );
+        child: ListView(
+          shrinkWrap: true,
+          padding: const EdgeInsets.all(20.0),
+          children: <Widget>[
+            Text(
+              title,
+              style: Theme.of(context).textTheme.display1,
+            ),
+            SizedBox(
+              height: 8.0,
+            ),
+            Column(
+              children: _buildFlightCards(),
+            ),
+          ],
+        ));
   }
 
-  List<Widget> _buildFlightCards(BuildContext context) {
+  static List<Widget> _buildFlightCards() {
     List<Flight> flights = getFlights(Category.findTrips);
-    return flights.map((flight) {
-      return Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          ListTile(
-            leading: Icon(Icons.album),
-            title: Text(flight.destination),
-            subtitle: Text(flight.layover ? 'Layover' : 'Nonstop'),
-          ),
-          SizedBox(
-            child: Divider(indent: 4.0,),
-          ),
-        ],
-      );
+    return List.generate(flights.length, (int index) {
+      return _DestinationCard(flight: flights[index]);
     }).toList();
   }
 }
@@ -114,7 +103,6 @@ class Backdrop extends StatefulWidget {
 }
 
 class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
-
   AnimationController _controller;
   TabController _tabController;
   FrontLayerStatus _initFrontLayerStatus;
@@ -166,14 +154,15 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
     );
   }
 
-  Animation<RelativeRect> _buildLayerAnimation
-      (BuildContext context, double layerTop) {
+  Animation<RelativeRect> _buildLayerAnimation(
+      BuildContext context, double layerTop) {
     Size size = MediaQuery.of(context).size;
     double lowHeight = size.height - 144.0;
     Animation<RelativeRect> layerAnimation;
 
     RelativeRect begin;
     RelativeRect end;
+
     /// closed: RelativeRect.fromLTRB(0.0, 0.0, 0.0, 0.0),
     /// partial: RelativeRect.fromLTRB(0.0, layerTop, 0.0, 0.0),
     ///
@@ -204,7 +193,7 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
     final double flyLayerTop = 270 + .0;
 
     Animation<RelativeRect> flyLayerAnimation =
-    _buildLayerAnimation(context, flyLayerTop);
+        _buildLayerAnimation(context, flyLayerTop);
 
     return Stack(
       children: <Widget>[
@@ -225,7 +214,7 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
     final double sleepLayerTop = 202 + .0;
 
     Animation<RelativeRect> sleepLayerAnimation =
-    _buildLayerAnimation(context, sleepLayerTop);
+        _buildLayerAnimation(context, sleepLayerTop);
 
     return Stack(
       children: <Widget>[
@@ -246,7 +235,7 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
     final double eatLayerTop = 270 + .0;
 
     Animation<RelativeRect> eatLayerAnimation =
-    _buildLayerAnimation(context, eatLayerTop);
+        _buildLayerAnimation(context, eatLayerTop);
 
     return Stack(
       children: <Widget>[
@@ -498,11 +487,11 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
 
   Widget _buildMenuTransition(BuildContext context, Widget child) {
     return _targetFrontLayerStatus == FrontLayerStatus.open
-    // TODO: check animation status and menu open / close status
+        // TODO: check animation status and menu open / close status
         ? FadeTransition(
-      opacity: _controller,
-      child: child,
-    )
+            opacity: _controller,
+            child: child,
+          )
         : Container();
   }
 
@@ -524,8 +513,9 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
                     _menuStatus = MenuStatus.closed;
                     _targetFrontLayerStatus = _initFrontLayerStatus;
                     _initFrontLayerStatus =
-                    _initFrontLayerStatus == FrontLayerStatus.closed ?
-                    FrontLayerStatus.partial : FrontLayerStatus.closed;
+                        _initFrontLayerStatus == FrontLayerStatus.closed
+                            ? FrontLayerStatus.partial
+                            : FrontLayerStatus.closed;
                     _controller.forward();
                   });
                 }),
@@ -549,8 +539,7 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
 }
 
 class _SplashOverride extends StatelessWidget {
-  const _SplashOverride({Key key, this.color, this.child})
-      : super(key: key);
+  const _SplashOverride({Key key, this.color, this.child}) : super(key: key);
 
   final Color color;
   final Widget child;
@@ -559,7 +548,8 @@ class _SplashOverride extends StatelessWidget {
   Widget build(BuildContext context) {
     return Theme(
       child: child,
-      data: Theme.of(context).copyWith(splashColor: color, highlightColor: color),
+      data:
+          Theme.of(context).copyWith(splashColor: color, highlightColor: color),
     );
   }
 }
@@ -577,6 +567,49 @@ class _PrimaryColorOverride extends StatelessWidget {
       child: child,
       // TODO(tianlun): Change the color of the text theme instead
       data: Theme.of(context).copyWith(primaryColor: color),
+    );
+  }
+}
+
+class _DestinationCard extends StatelessWidget {
+  _DestinationCard({this.flight}) : assert(flight != null);
+  final Flight flight;
+
+  @override
+  Widget build(BuildContext context) {
+    final imageWidget = Image.asset(
+      flight.assetName,
+      fit: BoxFit.cover,
+    );
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        ListTile(
+          contentPadding: EdgeInsets.fromLTRB(0.0, 0.0, 8.0, 0.0),
+          leading: ClipRRect(
+            borderRadius: BorderRadius.all(Radius.circular(4.0)),
+            child: SizedBox(
+              height: 60.0,
+              width: 60.0,
+              child: imageWidget,
+            ),
+          ),
+          title: Text(
+            flight.destination,
+            style: Theme.of(context).textTheme.title,
+          ),
+          subtitle: Text(
+            flight.layover ? 'Layover' : 'Nonstop',
+            style: Theme.of(context).textTheme.subhead,
+          ),
+        ),
+        SizedBox(
+          child: Divider(
+            indent: 4.0,
+          ),
+        ),
+      ],
     );
   }
 }
