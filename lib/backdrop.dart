@@ -110,7 +110,7 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
   AnimationController _xController;
   AnimationController _yController;
   var prevTabIndex;
-
+  var _kFlingValue;
   @override
   void initState() {
     super.initState();
@@ -134,6 +134,7 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
     prevTabIndex = 0;
     _initFrontLayerStatus = FrontLayerStatus.partial;
     _targetFrontLayerStatus = FrontLayerStatus.closed;
+    _kFlingValue = 1.0;
   }
 
   @override
@@ -190,7 +191,7 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
   }
 
   Widget _buildFlyStack(BuildContext context, BoxConstraints constraints) {
-    final double flyLayerTop = 270 + .0;
+    final double flyLayerTop = 236 + .0;
 
     Animation<RelativeRect> flyLayerAnimation =
         _buildLayerAnimation(context, flyLayerTop);
@@ -211,7 +212,7 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
   }
 
   Widget _buildSleepStack(BuildContext context, BoxConstraints constraints) {
-    final double sleepLayerTop = 202 + .0;
+    final double sleepLayerTop = 176 + .0;
 
     Animation<RelativeRect> sleepLayerAnimation =
         _buildLayerAnimation(context, sleepLayerTop);
@@ -232,7 +233,7 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
   }
 
   Widget _buildEatStack(BuildContext context, BoxConstraints constraints) {
-    final double eatLayerTop = 270 + .0;
+    final double eatLayerTop = 236 + .0;
 
     Animation<RelativeRect> eatLayerAnimation =
         _buildLayerAnimation(context, eatLayerTop);
@@ -254,7 +255,7 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
 
   Widget _buildMainApp(BuildContext context) {
     Size mediaSize = MediaQuery.of(context).size;
-
+    double transitionPadding = 16.0 / mediaSize.width;
     void _handleTabs(var tabIndex) {
       if (_tabController.index == tabIndex) {
 //          if (_targetFrontLayerStatus == FrontLayerStatus.closed) {
@@ -403,7 +404,6 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
         ),
       ),
     );
-
     return Material(
       child: Stack(
         children: <Widget>[
@@ -413,9 +413,10 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
               children: <Widget>[
                 widget.backLayer[0],
                   SlideTransition(
+                    transformHitTests: false,
                     position: Tween<Offset>(
                       begin: Offset(0.0, 0.0),
-                      end: Offset(-2.0, 0.0),
+                      end: Offset(0.0 - _kFlingValue, 0.0),
                     ).animate(
                       CurvedAnimation(
                         parent: _xController,
@@ -428,9 +429,10 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
                     ),
                   ),
                   SlideTransition(
+                    transformHitTests: false,
                     position: Tween<Offset>(
-                      begin: Offset(1.0, 0.0),
-                      end: Offset(0.0, 0.0),
+                      begin: Offset(1.0 + transitionPadding, 0.0),
+                      end: Offset(1.0 - _kFlingValue, 0.0),
                     ).animate(
                       CurvedAnimation(
                         parent: _xController,
@@ -458,12 +460,13 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
 //                  ),
 //                ),
                 SlideTransition(
+                  transformHitTests: false,
                   position: Tween<Offset>(
-                    begin: Offset(2.0, 0.0),
-                    end: Offset(0.0, 0.0),
+                    begin: Offset(2.0 + transitionPadding, 0.0),
+                    end: Offset(2.0 - _kFlingValue, 0.0),
                   ).animate(
                     CurvedAnimation(
-                      parent: _yController,
+                      parent: _xController,
                       curve: Interval(0.0, 1.0),
                       reverseCurve: Interval(0.0, 1.0).flipped,
                     ),

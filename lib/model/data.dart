@@ -35,7 +35,7 @@ List<Flight> getFlights(Category category) {
       category: Category.findTrips,
       id: 2,
       isFeatured: false,
-      destination: 'Khubu Valley, Nepal',
+      destination: 'Khumbu Valley, Nepal',
       layover: false,
     ),
     Flight(
