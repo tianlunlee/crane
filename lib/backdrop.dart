@@ -312,17 +312,19 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
       // TODO(tianlun): Replace IconButton icon with Crane logo.
       flexibleSpace: SafeArea(
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             _SplashOverride(
               color: kCraneAlpha,
               child: Container(
+//                width: 80.0,
                 padding: EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
                 child: IconButton(
+                  iconSize: 72.0,
                   padding: EdgeInsets.all(0.0),
                   icon: Image.asset(
-                    'assets/logo.png',
+                    'assets/menu_logo.png',
                     fit: BoxFit.cover,
                   ),
                   onPressed: () {

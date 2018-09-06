@@ -48,6 +48,7 @@ flutter:
   - assets/hotel.png
   - assets/time.png
   - assets/food.png
+  - assets/menu_logo.png
 
   fonts:
     - family: Raleway
